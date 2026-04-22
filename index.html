@@ -5,13 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vault — Secured</title>
   <meta name="description" content="Vault — the unified vessel management platform built by crew, for crew." />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&display=swap" rel="stylesheet" />
   <style>
-
-    /* ── TOKENS ─────────────────────────────────────────────── */
     :root {
       --forest:       #1B2B1A;
-      --deep-sage:    #2E4A2D;
       --off-white:    #FAFAF8;
       --cream:        #F5F2EB;
       --warm-linen:   #EBE6DB;
@@ -27,8 +24,6 @@
       --border:       #D8D3C5;
       --border-light: #EBE6DB;
     }
-
-    /* ── RESET ──────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
     body {
@@ -42,12 +37,12 @@
       min-height: 100vh;
     }
 
-    /* ── NAV ────────────────────────────────────────────────── */
+    /* NAV */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
       height: 56px;
-      background: rgba(245, 242, 235, 0.96);
+      background: rgba(245,242,235,0.96);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border-light);
@@ -82,7 +77,7 @@
       letter-spacing: 0.06em;
     }
 
-    /* ── MAIN WRAPPER ───────────────────────────────────────── */
+    /* PAGE WRAP */
     .page-wrap {
       flex: 1;
       display: flex;
@@ -90,17 +85,17 @@
       max-width: 2560px;
       width: 100%;
       margin: 0 auto;
-      padding-top: 56px; /* nav height */
+      padding-top: 56px;
     }
 
-    /* ── SPLIT ──────────────────────────────────────────────── */
+    /* SPLIT */
     .split {
       display: flex;
       flex: 1;
       min-height: calc(100vh - 56px);
     }
 
-    /* ── LEFT — IMAGE + OVERLAY ─────────────────────────────── */
+    /* LEFT PANEL */
     .panel-image {
       width: 50%;
       position: sticky;
@@ -115,9 +110,8 @@
       object-fit: cover;
       object-position: center 30%;
       display: block;
-      filter: brightness(0.88);
+      filter: brightness(0.9);
     }
-    /* VAULT branding overlay on image */
     .img-overlay {
       position: absolute;
       inset: 0;
@@ -128,7 +122,6 @@
       padding: 48px;
       pointer-events: none;
     }
-    /* Ghost watermark behind overlay */
     .img-ghost {
       position: absolute;
       font-family: 'DM Serif Display', serif;
@@ -138,8 +131,8 @@
       opacity: 0.07;
       pointer-events: none;
       white-space: nowrap;
-      bottom: 0;
-      left: -12px;
+      bottom: -10px;
+      left: -10px;
       line-height: 1;
       user-select: none;
     }
@@ -151,13 +144,10 @@
       align-items: center;
       text-align: center;
     }
-    .overlay-mark {
-      margin-bottom: 22px;
-      opacity: 0.92;
-    }
+    .overlay-mark { margin-bottom: 20px; opacity: 0.95; }
     .overlay-wordmark {
       font-family: 'DM Serif Display', serif;
-      font-size: clamp(48px, 7vw, 80px);
+      font-size: clamp(48px, 7vw, 82px);
       letter-spacing: 0.14em;
       color: var(--forest);
       line-height: 1;
@@ -166,7 +156,7 @@
     .overlay-rule {
       width: 36px;
       height: 1.5px;
-      background: rgba(27,43,26,0.25);
+      background: rgba(27,43,26,0.22);
       border-radius: 2px;
       margin-bottom: 14px;
     }
@@ -174,11 +164,11 @@
       font-family: 'DM Serif Display', serif;
       font-style: italic;
       font-size: clamp(14px, 1.8vw, 18px);
-      color: rgba(27,43,26,0.65);
+      color: rgba(27,43,26,0.62);
       letter-spacing: 0.06em;
     }
 
-    /* ── RIGHT — CONTENT PANEL ──────────────────────────────── */
+    /* RIGHT PANEL */
     .panel-content {
       width: 50%;
       background: var(--off-white);
@@ -189,7 +179,6 @@
       justify-content: center;
       padding: 72px 60px;
     }
-    /* Ghost watermark */
     .content-ghost {
       position: absolute;
       font-family: 'DM Serif Display', serif;
@@ -209,28 +198,24 @@
       z-index: 1;
       max-width: 480px;
     }
-
-    /* Eyebrow */
     .eyebrow {
       font-size: 10px;
       font-weight: 500;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--text-tert);
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
-
-    /* Descriptor */
     .descriptor {
       font-size: 13px;
       font-weight: 300;
       color: var(--text-sec);
       line-height: 1.8;
-      margin-bottom: 36px;
+      margin-bottom: 32px;
       max-width: 380px;
     }
 
-    /* ── FEATURE GRID ───────────────────────────────────────── */
+    /* FEATURE GRID */
     .feature-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -264,9 +249,7 @@
       flex-shrink: 0;
       transition: background 0.18s;
     }
-    .feature-block:hover .feature-icon-box {
-      background: rgba(135,188,237,0.35);
-    }
+    .feature-block:hover .feature-icon-box { background: rgba(135,188,237,0.35); }
     .feature-name {
       font-size: 12px;
       font-weight: 500;
@@ -282,12 +265,8 @@
       margin-top: 1px;
     }
 
-    /* ── CTAS ───────────────────────────────────────────────── */
-    .ctas {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
+    /* BUTTONS */
+    .ctas { display: flex; gap: 10px; flex-wrap: wrap; }
     .btn {
       display: inline-flex;
       align-items: center;
@@ -303,31 +282,13 @@
       border: none;
       transition: background 0.18s, color 0.18s, box-shadow 0.18s;
     }
-    .btn-primary {
-      background: var(--toggle-blue);
-      color: #ffffff;
-    }
-    .btn-primary:hover {
-      background: #3a7be6;
-      box-shadow: 0 4px 18px rgba(74,140,247,0.28);
-    }
-    .btn-outline {
-      background: transparent;
-      color: var(--text-primary);
-      border: 1.5px solid var(--sand);
-    }
-    .btn-outline:hover {
-      border-color: var(--toggle-blue);
-      color: var(--toggle-blue);
-      background: var(--sky-pale);
-    }
-    .btn-icon {
-      display: flex;
-      align-items: center;
-      flex-shrink: 0;
-    }
+    .btn-primary { background: var(--toggle-blue); color: #fff; }
+    .btn-primary:hover { background: #3a7be6; box-shadow: 0 4px 18px rgba(74,140,247,0.28); }
+    .btn-outline { background: transparent; color: var(--text-primary); border: 1.5px solid var(--sand); }
+    .btn-outline:hover { border-color: var(--toggle-blue); color: var(--toggle-blue); background: var(--sky-pale); }
+    .btn-icon { display: flex; align-items: center; flex-shrink: 0; }
 
-    /* ── FOOTER ─────────────────────────────────────────────── */
+    /* FOOTER */
     footer {
       background: var(--cream);
       border-top: 1px solid var(--border-light);
@@ -342,38 +303,22 @@
       gap: 16px;
       flex-wrap: wrap;
     }
-    .footer-left {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-    }
+    .footer-left { display: flex; align-items: center; gap: 11px; }
     .footer-wordmark {
       font-family: 'DM Serif Display', serif;
       font-size: 16px;
       letter-spacing: 0.12em;
       color: var(--forest);
     }
-    .footer-sep {
-      width: 1px;
-      height: 14px;
-      background: var(--sand);
-    }
+    .footer-sep { width: 1px; height: 14px; background: var(--sand); }
     .footer-tagline {
       font-family: 'DM Serif Display', serif;
       font-style: italic;
       font-size: 13px;
       color: var(--text-tert);
     }
-    .footer-right {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .footer-meta {
-      font-size: 11px;
-      color: var(--text-tert);
-      letter-spacing: 0.04em;
-    }
+    .footer-right { display: flex; align-items: center; gap: 20px; }
+    .footer-meta { font-size: 11px; color: var(--text-tert); letter-spacing: 0.04em; }
     .footer-cs {
       font-size: 11px;
       font-weight: 500;
@@ -385,20 +330,11 @@
       border-radius: 50px;
     }
 
-    /* ── RESPONSIVE ─────────────────────────────────────────── */
+    /* RESPONSIVE */
     @media (max-width: 960px) {
       .split { flex-direction: column; min-height: auto; }
-      .panel-image {
-        width: 100%;
-        position: relative;
-        top: 0;
-        height: 52vh;
-      }
-      .panel-content {
-        width: 100%;
-        padding: 52px 36px 60px;
-        justify-content: flex-start;
-      }
+      .panel-image { width: 100%; position: relative; top: 0; height: 52vh; }
+      .panel-content { width: 100%; padding: 52px 36px 60px; justify-content: flex-start; }
       .content-inner { max-width: 100%; }
     }
     @media (max-width: 640px) {
@@ -411,7 +347,6 @@
       footer { padding: 24px; }
       .footer-cs { display: none; }
     }
-
   </style>
 </head>
 <body>
@@ -432,21 +367,14 @@
 
   <!-- PAGE WRAPPER -->
   <div class="page-wrap">
-
-    <!-- SPLIT -->
     <div class="split">
 
-      <!-- LEFT — IMAGE + VAULT OVERLAY -->
+      <!-- LEFT — IMAGE + OVERLAY -->
       <div class="panel-image">
-        <img src="portal_mockups_v2/Sample 2/1.jpg" alt="Vault — Superyacht" />
-
-        <!-- Ghost watermark -->
+        <img src="vault-hero.jpg" alt="Vault — Superyacht" />
         <span class="img-ghost" aria-hidden="true">VAULT</span>
-
-        <!-- VAULT branding overlay -->
         <div class="img-overlay">
           <div class="overlay-inner">
-            <!-- T-mark reversed (white) -->
             <svg class="overlay-mark" width="44" height="46" viewBox="0 0 100 104" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs><mask id="vmOverlay"><rect width="100" height="104" fill="black"/><path d="M8,8 L92,8 L50,96 Z" fill="white"/><rect x="8" y="8" width="84" height="9" fill="black"/><rect x="46" y="8" width="8" height="88" fill="black"/></mask></defs>
               <rect width="100" height="104" fill="#1B2B1A" mask="url(#vmOverlay)"/>
@@ -461,21 +389,13 @@
       <!-- RIGHT — CONTENT -->
       <div class="panel-content">
         <span class="content-ghost" aria-hidden="true">VAULT</span>
-
         <div class="content-inner">
 
-          <!-- Eyebrow -->
           <div class="eyebrow">Vessel Management Platform</div>
+          <p class="descriptor">Built from the inside out — every department, every workflow, every communication unified in one intelligent hub. By crew, for crew.</p>
 
-          <!-- Descriptor -->
-          <p class="descriptor">
-            Built from the inside out — every department, every workflow, every communication unified in one intelligent hub. By crew, for crew.
-          </p>
-
-          <!-- Feature grid -->
           <div class="feature-grid">
 
-            <!-- Management -->
             <div class="feature-block">
               <div class="feature-icon-box">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
@@ -485,13 +405,9 @@
                   <path d="M12 7v4M12 11H5v2M12 11h7v2" stroke="#5A9ED4" stroke-width="1.5" stroke-linecap="round"/>
                 </svg>
               </div>
-              <div>
-                <div class="feature-name">Management</div>
-                <div class="feature-sub">Ops &amp; hierarchy</div>
-              </div>
+              <div><div class="feature-name">Management</div><div class="feature-sub">Ops &amp; hierarchy</div></div>
             </div>
 
-            <!-- Crew -->
             <div class="feature-block">
               <div class="feature-icon-box">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
@@ -501,13 +417,9 @@
                   <path d="M22 20c0-3.314-2.91-6-6.5-6s-6.5 2.686-6.5 6" stroke="#5A9ED4" stroke-width="1.5" stroke-linecap="round"/>
                 </svg>
               </div>
-              <div>
-                <div class="feature-name">Crew</div>
-                <div class="feature-sub">Schedules &amp; handovers</div>
-              </div>
+              <div><div class="feature-name">Crew</div><div class="feature-sub">Schedules &amp; handovers</div></div>
             </div>
 
-            <!-- Inventory -->
             <div class="feature-block">
               <div class="feature-icon-box">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
@@ -516,13 +428,9 @@
                   <rect x="7" y="3" width="10" height="5" rx="1" stroke="#5A9ED4" stroke-width="1.5"/>
                 </svg>
               </div>
-              <div>
-                <div class="feature-name">Inventory</div>
-                <div class="feature-sub">Stores &amp; spares</div>
-              </div>
+              <div><div class="feature-name">Inventory</div><div class="feature-sub">Stores &amp; spares</div></div>
             </div>
 
-            <!-- Compliance -->
             <div class="feature-block">
               <div class="feature-icon-box">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
@@ -530,13 +438,9 @@
                   <path d="M8.5 12l2.5 2.5 4.5-4.5" stroke="#5A9ED4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
-              <div>
-                <div class="feature-name">Compliance</div>
-                <div class="feature-sub">Certs &amp; audits</div>
-              </div>
+              <div><div class="feature-name">Compliance</div><div class="feature-sub">Certs &amp; audits</div></div>
             </div>
 
-            <!-- Procurement -->
             <div class="feature-block">
               <div class="feature-icon-box">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
@@ -545,29 +449,20 @@
                   <circle cx="17" cy="20" r="1" fill="#5A9ED4"/>
                 </svg>
               </div>
-              <div>
-                <div class="feature-name">Procurement</div>
-                <div class="feature-sub">Orders &amp; vendors</div>
-              </div>
+              <div><div class="feature-name">Procurement</div><div class="feature-sub">Orders &amp; vendors</div></div>
             </div>
 
-            <!-- Maintenance -->
             <div class="feature-block">
               <div class="feature-icon-box">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
                   <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="#5A9ED4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
-              <div>
-                <div class="feature-name">Maintenance</div>
-                <div class="feature-sub">Jobs &amp; defect logs</div>
-              </div>
+              <div><div class="feature-name">Maintenance</div><div class="feature-sub">Jobs &amp; defect logs</div></div>
             </div>
 
           </div>
-          <!-- /feature-grid -->
 
-          <!-- CTAs -->
           <div class="ctas">
             <a class="btn btn-primary" href="https://instagram.com/veslvault" target="_blank" rel="noopener noreferrer">
               <span class="btn-icon">
@@ -591,15 +486,10 @@
           </div>
 
         </div>
-        <!-- /content-inner -->
       </div>
-      <!-- /panel-content -->
 
     </div>
-    <!-- /split -->
-
   </div>
-  <!-- /page-wrap -->
 
   <!-- FOOTER -->
   <footer>
