@@ -86,6 +86,16 @@
       position: absolute; inset: 0;
       background: linear-gradient(180deg, rgba(13,21,13,0.04) 0%, rgba(13,21,13,0.52) 100%);
     }
+    .hero-ghost {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+      display: flex; align-items: flex-end; justify-content: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(72px, 22vw, 220px);
+      letter-spacing: 0.18em; color: rgba(255,255,255,0.13);
+      text-transform: uppercase; user-select: none;
+      pointer-events: none; white-space: nowrap;
+      line-height: 0.85;
+    }
     .hero-content {
       position: relative; z-index: 10; height: 100%;
       display: flex; flex-direction: column;
@@ -367,6 +377,7 @@
 <section class="hero">
   <img class="hero-img" src="vault-hero.jpg" alt="Vault — Superyacht" />
   <div class="hero-overlay"></div>
+  <div class="hero-ghost">VAULT</div>
   <div class="hero-content">
     <svg class="hero-logo" width="44" height="46" viewBox="0 0 100 104" fill="none">
       <defs><mask id="hm"><rect width="100" height="104" fill="black"/><path d="M8,8 L92,8 L50,96 Z" fill="white"/><rect x="8" y="8" width="84" height="9" fill="black"/><rect x="46" y="8" width="8" height="88" fill="black"/></mask></defs>
@@ -450,6 +461,7 @@
     </div>
     <div class="split-photo-wrap tall">
       <img src="Sample%202/4.jpg" alt="Engineering" style="object-position:center center" />
+      <div style="position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(to bottom,transparent,var(--midnight));pointer-events:none"></div>
     </div>
   </div>
 </section>
