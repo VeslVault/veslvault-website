@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1440" />
+  <title>VAULT — Galley</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --forest:      #1B2B1A; --deep-sage:   #2E4A2D; --midnight:    #0D150D;
+      --off-white:   #FAFAF8; --cream:       #F5F2EB; --warm-linen:  #EBE6DB;
+      --sand:        #D8D3C5; --sky:         #87BCED; --mist:        #B8CBE8;
+      --sky-deep:    #5A9ED4; --sky-pale:    #D6E8F7;
+      --text-pri:    #1B2B1A; --text-sec:    #5A6B59; --text-ter:    #8FA08E;
+      --red:   #C04040; --red-bg:   #FEF0F0; --red-bd:   #F5CCCC;
+      --amber: #C07020; --amber-bg: #FEF6EC; --amber-bd: #F5DDB8;
+      --green: #2E6B2D; --green-bg: #F0F8F0; --green-bd: #B8D9B8;
+      --blue:  #2563EB; --blue-bg:  #EFF6FF; --blue-bd:  #BFDBFE;
+    }
+    html, body { width:100%; height:100%; background:var(--forest);
+      font-family:'DM Sans',sans-serif; color:var(--text-pri); -webkit-font-smoothing:antialiased; }
+    .app { display:flex; flex-direction:column; width:100vw; height:100vh; min-width:1280px; }
+
+    /* Topbar */
+    .topbar { background:var(--sky); height:44px; display:flex; align-items:center;
+      justify-content:space-between; padding:0 22px; flex-shrink:0; }
+    .topbar-brand { display:flex; align-items:center; gap:10px;
+      font-family:'DM Serif Display',serif; font-size:13.5px; letter-spacing:0.14em; color:var(--forest); }
+    .topbar-vessel { font-size:11.5px; font-weight:500; letter-spacing:0.1em; color:var(--forest); opacity:.55; }
+    .topbar-right { display:flex; align-items:center; gap:12px; }
+    .topbar-login { font-size:10.5px; color:var(--forest); opacity:.5; letter-spacing:.02em; }
+    .topbar-avatar { width:28px; height:28px; border-radius:50%; background:rgba(27,43,26,.18);
+      display:flex; align-items:center; justify-content:center;
+      font-size:9.5px; font-weight:600; letter-spacing:.04em; color:var(--forest); }
+
+    /* Body */
+    .body { display:flex; flex:1; overflow:hidden; }
+
+    /* Sidebar */
+    .sidebar { width:200px; background:#87BCED; display:flex; flex-direction:column;
+      flex-shrink:0; padding:14px 12px; overflow-y:auto; gap:2px; }
+    .sb-search { display:flex; align-items:center; gap:8px;
+      background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.25);
+      border-radius:10px; padding:8px 12px; margin-bottom:10px; }
+    .sb-search input { background:none; border:none; outline:none;
+      font-family:'DM Sans',sans-serif; font-size:12px; color:white; width:100%; }
+    .sb-search input::placeholder { color:rgba(255,255,255,.65); }
+    .sb-item { display:flex; align-items:center; gap:11px; padding:10px 12px;
+      font-size:13px; font-weight:600; color:rgba(255,255,255,.88);
+      border-radius:10px; cursor:pointer; transition:background .15s; }
+    .sb-item:hover { background:rgba(255,255,255,.15); }
+    .sb-item.active { background:rgba(255,255,255,.22); color:white; box-shadow:0 1px 6px rgba(0,0,0,.08); }
+    .sb-icon { flex-shrink:0; opacity:.9; }
+    .sb-item.active .sb-icon { opacity:1; }
+    .sb-spacer { flex:1; min-height:8px; }
+
+    /* Content – light */
+    .content { flex:1; background:var(--off-white); overflow-y:auto; padding:22px 28px 28px; }
+    .content.dark { background:var(--midnight); }
+    ::-webkit-scrollbar { width:3px; }
+    ::-webkit-scrollbar-thumb { background:var(--sand); border-radius:2px; }
+
+    /* Page header */
+    .pg-head { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:18px; }
+    .pg-title { font-family:'DM Serif Display',serif; font-size:24px; letter-spacing:.02em;
+      color:var(--forest); line-height:1.1; margin-bottom:3px; }
+    .dark .pg-title { color:var(--off-white); }
+    .pg-sub { font-size:11.5px; color:var(--text-ter); }
+    .dark .pg-sub { color:var(--mist); opacity:.6; }
+    .pg-meta { font-size:10.5px; color:var(--text-ter); text-align:right; line-height:1.65; }
+    .dark .pg-meta { color:var(--mist); opacity:.6; }
+    .pg-meta span { color:var(--sky-deep); font-weight:500; }
+    .dark .pg-meta span { color:var(--sky); }
+
+    /* Stat row */
+    .stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:18px; }
+    .stat { border-radius:11px; padding:14px 16px 12px; border:1px solid; }
+    .stat.r { background:var(--red-bg);   border-color:var(--red-bd); }
+    .stat.a { background:var(--amber-bg); border-color:var(--amber-bd); }
+    .stat.g { background:var(--green-bg); border-color:var(--green-bd); }
+    .dark .stat.r { background:rgba(192,64,64,.12); border-color:rgba(192,64,64,.3); }
+    .dark .stat.a { background:rgba(192,112,32,.12); border-color:rgba(192,112,32,.3); }
+    .dark .stat.g { background:rgba(46,107,45,.12); border-color:rgba(46,107,45,.3); }
+    .stat-lbl { font-size:9px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px; }
+    .stat.r .stat-lbl { color:var(--red); }
+    .stat.a .stat-lbl { color:var(--amber); }
+    .stat.g .stat-lbl { color:var(--green); }
+    .stat-row-inner { display:flex; align-items:flex-end; justify-content:space-between; }
+    .stat-num { font-size:38px; font-weight:300; color:var(--forest); line-height:1; }
+    .dark .stat-num { color:var(--off-white); }
+    .stat-hint { font-size:10.5px; color:var(--text-ter); margin-top:2px; }
+    .dark .stat-hint { color:var(--mist); opacity:.7; }
+    .stat-ico { width:30px; height:30px; border-radius:50%; border:1.5px solid;
+      display:flex; align-items:center; justify-content:center; opacity:.45; }
+    .stat.r .stat-ico { border-color:var(--red);   color:var(--red); }
+    .stat.a .stat-ico { border-color:var(--amber); color:var(--amber); }
+    .stat.g .stat-ico { border-color:var(--green); color:var(--green); }
+
+    /* Card */
+    .card { background:white; border:1px solid var(--sand); border-radius:11px; margin-bottom:14px; overflow:hidden; }
+    .dark .card { background:#12200F; border-color:#253523; }
+    .card-head { display:flex; align-items:center; justify-content:space-between;
+      padding:11px 18px; border-bottom:1px solid var(--warm-linen); background:var(--cream); }
+    .dark .card-head { background:#0D150D; border-bottom-color:#1F2E1E; }
+    .card-title { font-size:11.5px; font-weight:600; color:var(--forest); }
+    .dark .card-title { color:var(--mist); }
+    .card-action { font-size:10.5px; color:var(--sky-deep); font-weight:500; cursor:pointer; }
+    .dark .card-action { color:var(--sky); }
+
+    /* Search */
+    .search-row { display:flex; align-items:center; gap:8px;
+      padding:8px 18px; border-bottom:1px solid var(--warm-linen); }
+    .dark .search-row { border-bottom-color:#1F2E1E; }
+    .search-inp { flex:1; background:var(--cream); border:1px solid var(--sand);
+      border-radius:7px; padding:5px 10px; font-family:'DM Sans',sans-serif;
+      font-size:11.5px; color:var(--text-ter); outline:none; }
+    .dark .search-inp { background:#0D150D; border-color:#253523; color:var(--mist); }
+
+    /* Table */
+    table { width:100%; border-collapse:collapse; font-size:12px; }
+    thead th { background:var(--cream); color:var(--text-ter); font-size:9.5px; font-weight:600;
+      letter-spacing:.09em; text-transform:uppercase; padding:8px 14px;
+      text-align:left; border-bottom:1px solid var(--warm-linen); }
+    .dark thead th { background:#0D150D; border-bottom-color:#1F2E1E; }
+    tbody tr { border-bottom:1px solid var(--warm-linen); }
+    .dark tbody tr { border-bottom-color:#1F2E1E; }
+    tbody tr:last-child { border-bottom:none; }
+    tbody tr:hover { background:rgba(214,232,247,.18); }
+    .dark tbody tr:hover { background:rgba(135,188,237,.06); }
+    tbody td { padding:9px 14px; color:var(--text-sec); vertical-align:middle; }
+    .dark tbody td { color:var(--mist); }
+    td.nm { color:var(--sky-deep); font-weight:600; font-size:11.5px; }
+    .dark td.nm { color:var(--sky); }
+
+    /* Badge */
+    .badge { display:inline-flex; align-items:center; gap:4px; font-size:9.5px; font-weight:600;
+      letter-spacing:.06em; padding:2px 8px; border-radius:20px; border:1px solid; white-space:nowrap; }
+    .bd { width:4px; height:4px; border-radius:50%; }
+    .b-exp { background:var(--red-bg);   border-color:var(--red-bd);   color:var(--red); }
+    .b-val { background:var(--green-bg); border-color:var(--green-bd); color:var(--green); }
+    .b-amb { background:var(--amber-bg); border-color:var(--amber-bd); color:var(--amber); }
+    .b-inf { background:var(--blue-bg);  border-color:var(--blue-bd);  color:var(--blue); }
+    .b-neu { background:var(--warm-linen); border-color:var(--sand);   color:var(--text-sec); }
+    .dark .b-exp { background:rgba(192,64,64,.15); border-color:rgba(192,64,64,.4); }
+    .dark .b-val { background:rgba(46,107,45,.15); border-color:rgba(46,107,45,.4); }
+    .dark .b-amb { background:rgba(192,112,32,.15); border-color:rgba(192,112,32,.4); }
+    .dark .b-neu { background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.15); color:var(--mist); }
+
+    /* Metric strip */
+    .metrics { display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--warm-linen); }
+    .dark .metrics { border-top-color:#1F2E1E; }
+    .metric { padding:13px 0; text-align:center; border-right:1px solid var(--warm-linen); }
+    .dark .metric { border-right-color:#1F2E1E; }
+    .metric:last-child { border-right:none; }
+    .m-num { font-size:26px; font-weight:300; color:var(--forest); line-height:1; margin-bottom:3px; }
+    .dark .m-num { color:var(--off-white); }
+    .m-lbl { font-size:9px; color:var(--text-ter); font-weight:600; letter-spacing:.07em; text-transform:uppercase; }
+    .dark .m-lbl { color:var(--mist); opacity:.6; }
+
+    /* Panel row */
+    .panel-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .panel { background:white; border:1px solid var(--sand); border-radius:11px; overflow:hidden; }
+    .dark .panel { background:#12200F; border-color:#253523; }
+    .panel-head { display:flex; align-items:center; justify-content:space-between;
+      padding:10px 15px; border-bottom:1px solid var(--warm-linen); background:var(--cream); }
+    .dark .panel-head { background:#0D150D; border-bottom-color:#1F2E1E; }
+    .panel-title { font-size:11px; font-weight:600; color:var(--forest); }
+    .dark .panel-title { color:var(--mist); }
+    .alert-row { display:flex; align-items:center; justify-content:space-between;
+      padding:10px 15px; border-bottom:1px solid var(--warm-linen); }
+    .dark .alert-row { border-bottom-color:#1F2E1E; }
+    .alert-row:last-child { border-bottom:none; }
+    .alert-nm { font-size:11.5px; font-weight:600; color:var(--forest); margin-bottom:2px; }
+    .dark .alert-nm { color:var(--off-white); }
+    .alert-sub { font-size:10.5px; color:var(--text-ter); }
+    .dark .alert-sub { color:var(--mist); opacity:.6; }
+    .empty { padding:18px 15px; text-align:center; font-size:11px; color:var(--text-ter); }
+    .dark .empty { color:var(--mist); opacity:.5; }
+    .empty-ico { width:28px; height:28px; margin:0 auto 8px; border:1.5px solid var(--sand);
+      border-radius:50%; display:flex; align-items:center; justify-content:center; }
+
+    /* Progress bar */
+    .prog-wrap { background:var(--warm-linen); border-radius:4px; height:5px; margin-top:4px; }
+    .dark .prog-wrap { background:#1F2E1E; }
+    .prog-fill { height:5px; border-radius:4px; background:var(--sky-deep); }
+    .prog-fill.g { background:var(--green); }
+    .prog-fill.a { background:#C07020; }
+    .prog-fill.r { background:var(--red); }
+
+    /* Key-value row */
+    .kv-row { display:flex; justify-content:space-between; align-items:center;
+      padding:9px 18px; border-bottom:1px solid var(--warm-linen); font-size:12px; }
+    .dark .kv-row { border-bottom-color:#1F2E1E; }
+    .kv-row:last-child { border-bottom:none; }
+    .kv-label { color:var(--text-ter); font-size:11px; }
+    .dark .kv-label { color:var(--mist); opacity:.6; }
+    .kv-val { color:var(--forest); font-weight:500; font-size:11.5px; }
+    .dark .kv-val { color:var(--off-white); }
+
+    /* Two-col layout */
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+    .three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:14px; }
+
+    /* Footer */
+    .footer { background:var(--forest); height:36px; display:flex; align-items:center;
+      justify-content:space-between; padding:0 22px; flex-shrink:0; }
+    .ft-mark { font-family:'DM Serif Display',serif; font-size:12px; letter-spacing:.14em;
+      color:var(--off-white); opacity:.6; }
+    .ft-tag { font-size:10.5px; color:var(--off-white); opacity:.38; letter-spacing:.06em; font-style:italic; }
+    .ft-mode { font-size:9px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+      color:var(--sky); opacity:.55; }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-brand">
+      <svg viewBox="0 0 100 100" width="26" height="26">
+        <defs><mask id="vm">
+          <path d="M8,8 L92,8 L50,96 Z" fill="white"/>
+          <rect x="8"  y="8" width="84" height="9"  fill="black"/>
+          <rect x="46" y="8" width="8"  height="88" fill="black"/>
+        </mask></defs>
+        <rect width="100" height="100" fill="#1B2B1A" mask="url(#vm)"/>
+      </svg>
+      VAULT
+    </div>
+    <div class="topbar-vessel">M/Y ATLAS</div>
+    <div class="topbar-right">
+      <span class="topbar-login">Last login: 08:14 today</span>
+      <div class="topbar-avatar">JH</div>
+    </div>
+  </div>
+  <div class="body">
+    <nav class="sidebar">
+      <div class="sb-search">
+        <svg class="sb-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Search" />
+      </div>
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Dashboard
+      </div>
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.5c0 2.5-4.5 5-4.5 5S13 19 13 16.5a4.5 4.5 0 0 1 9 0z"/><circle cx="17.5" cy="16.5" r="1" fill="white"/><path d="M5 18H3a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4"/></svg>
+        Trip Hub
+      </div>
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a4.5 9 0 0 1 0 18 4.5 9 0 0 1 0-18"/><line x1="3" y1="12" x2="21" y2="12"/></svg>
+        Bridge
+      </div>
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="12" y2="16"/></svg>
+        Purser
+      </div>
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        Engineering
+      </div>
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Interior
+      </div>
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 20h16L12 2z"/><line x1="4" y1="15" x2="20" y2="15"/></svg>
+        Deck
+      </div>
+      <div class="sb-item active">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+        Galley
+      </div>
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M5 20V10l7-7 7 7v10"/><path d="M9 20v-5h6v5"/></svg>
+        Projects
+      </div>
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Crew
+      </div>
+      <div class="sb-spacer"></div>
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </div>
+    </nav>
+    <main class="content dark">
+
+      <div class="pg-head">
+        <div>
+          <div class="pg-title">Galley</div>
+          <div class="pg-sub">Meal planning, provisioning &amp; dietary management · M/Y Atlas</div>
+        </div>
+        <div class="pg-meta">Wednesday, 15 April 2026<br><span>8 guests · Dinner 20:00</span></div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat g">
+          <div class="stat-lbl">Meals Today</div>
+          <div class="stat-row-inner">
+            <div><div class="stat-num">3</div><div class="stat-hint">Breakfast served · Lunch &amp; Dinner planned</div></div>
+            <div class="stat-ico"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+        </div>
+        <div class="stat a">
+          <div class="stat-lbl">Dietary Flags</div>
+          <div class="stat-row-inner">
+            <div><div class="stat-num">3</div><div class="stat-hint">Vegan · Gluten-free · No shellfish</div></div>
+            <div class="stat-ico"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="0.8" fill="currentColor"/></svg></div>
+          </div>
+        </div>
+        <div class="stat r">
+          <div class="stat-lbl">Provisions Low</div>
+          <div class="stat-row-inner">
+            <div><div class="stat-num">4</div><div class="stat-hint">Items below par level</div></div>
+            <div class="stat-ico"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Today's Menu — 15 April 2026</span>
+          <span class="card-action">Edit Menu →</span>
+        </div>
+        <table>
+          <thead><tr><th>Meal</th><th>Course</th><th>Description</th><th>Time</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="nm">Breakfast</td><td>Full Service</td><td>Continental + Full English · Açaí bowls (vegan)</td><td>08:00 – 10:00</td><td><span class="badge b-val">Served</span></td></tr>
+            <tr><td class="nm">Lunch</td><td>3 Course</td><td>Burrata · Sea bass · Lemon tart (GF option)</td><td>13:00</td><td><span class="badge b-amb">Prep Underway</span></td></tr>
+            <tr><td class="nm">Canapés</td><td>Cocktail</td><td>Sundeck snacks · No shellfish · Vegan options</td><td>18:30</td><td><span class="badge b-neu">Planned</span></td></tr>
+            <tr><td class="nm">Dinner</td><td>5 Course</td><td>Lobster bisque · Wagyu · Soufflé — see notes</td><td>20:00</td><td><span class="badge b-neu">Planned</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel-row">
+        <div class="panel">
+          <div class="panel-head"><span class="panel-title">Low Stock Alerts</span><span class="card-action">Order Now →</span></div>
+          <div class="alert-row"><div><div class="alert-nm">Heavy Cream (500ml)</div><div class="alert-sub">2 units remaining · Par: 8</div></div><span class="badge b-exp">Critical</span></div>
+          <div class="alert-row"><div><div class="alert-nm">Sourdough Loaves</div><div class="alert-sub">1 remaining · Par: 4</div></div><span class="badge b-exp">Critical</span></div>
+          <div class="alert-row"><div><div class="alert-nm">Parmesan (block)</div><div class="alert-sub">1 unit · Par: 3</div></div><span class="badge b-amb">Low</span></div>
+          <div class="alert-row"><div><div class="alert-nm">Champagne — Brut NV</div><div class="alert-sub">4 bottles · Par: 12</div></div><span class="badge b-amb">Low</span></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><span class="panel-title">Dietary Requirements</span></div>
+          <div class="alert-row"><div><div class="alert-nm">Mr. Thompson</div><div class="alert-sub">Strict vegan · No honey · No dairy</div></div><span class="badge b-inf">Vegan</span></div>
+          <div class="alert-row"><div><div class="alert-nm">Ms. Park</div><div class="alert-sub">Coeliac disease · Cross-contamination risk</div></div><span class="badge b-amb">Gluten-free</span></div>
+          <div class="alert-row"><div><div class="alert-nm">Mr. Laurent</div><div class="alert-sub">No shellfish — anaphylaxis risk · EpiPen aboard</div></div><span class="badge b-exp">Allergy</span></div>
+          <div class="alert-row"><div><div class="alert-nm">Andersen children</div><div class="alert-sub">Simple kids menu · Early sitting 18:30</div></div><span class="badge b-neu">Kids</span></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+  <div class="footer">
+    <div class="ft-mark">VAULT</div>
+    <div class="ft-tag">Built by crew, for crew</div>
+    <div class="ft-mode">DARK MODE</div>
+  </div>
+</div>
+</body>
+</html>

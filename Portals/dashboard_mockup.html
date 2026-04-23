@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1440" />
+  <title>VAULT — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --forest:      #1B2B1A;
+      --deep-sage:   #2E4A2D;
+      --midnight:    #0D150D;
+      --off-white:   #FAFAF8;
+      --cream:       #F5F2EB;
+      --warm-linen:  #EBE6DB;
+      --sand:        #D8D3C5;
+      --sky:         #87BCED;
+      --mist:        #B8CBE8;
+      --sky-deep:    #5A9ED4;
+      --sky-pale:    #D6E8F7;
+      --text-pri:    #1B2B1A;
+      --text-sec:    #5A6B59;
+      --text-ter:    #8FA08E;
+      --red:         #C04040; --red-bg:    #FEF0F0; --red-bd:    #F5CCCC;
+      --amber:       #C07020; --amber-bg:  #FEF6EC; --amber-bd:  #F5DDB8;
+      --green:       #2E6B2D; --green-bg:  #F0F8F0; --green-bd:  #B8D9B8;
+      --blue:        #2563EB; --blue-bg:   #EFF6FF; --blue-bd:   #BFDBFE;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--forest);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text-pri);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Full-viewport app shell ──────────────────────────────── */
+    .app {
+      display: flex;
+      flex-direction: column;
+      width: 100vw;
+      height: 100vh;
+      min-width: 1280px;
+    }
+
+    /* ── Topbar ───────────────────────────────────────────────── */
+    .topbar {
+      background: var(--sky);
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      flex-shrink: 0;
+    }
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'DM Serif Display', serif;
+      font-size: 13.5px;
+      letter-spacing: 0.14em;
+      color: var(--forest);
+    }
+    .topbar-vessel {
+      font-size: 11.5px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--forest);
+      opacity: 0.55;
+    }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .topbar-login {
+      font-size: 10.5px;
+      color: var(--forest);
+      opacity: 0.5;
+      letter-spacing: 0.02em;
+    }
+    .topbar-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(27,43,26,0.18);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9.5px; font-weight: 600; letter-spacing: 0.04em;
+      color: var(--forest);
+    }
+
+    /* ── Body ─────────────────────────────────────────────────── */
+    .body { display: flex; flex: 1; overflow: hidden; }
+
+    /* ── Sidebar ──────────────────────────────────────────────── */
+    .sidebar {
+      width: 200px;
+      background: #87BCED;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      padding: 14px 12px 14px;
+      overflow-y: auto;
+      gap: 2px;
+    }
+    /* Search bar inside sidebar */
+    .sb-search {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+    }
+    .sb-search input {
+      background: none; border: none; outline: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px; font-weight: 400;
+      color: white; width: 100%;
+    }
+    .sb-search input::placeholder { color: rgba(255,255,255,0.65); }
+    .sb-item {
+      display: flex; align-items: center; gap: 11px;
+      padding: 10px 12px; font-size: 13px; font-weight: 600;
+      color: rgba(255,255,255,0.88);
+      border-radius: 10px;
+      cursor: pointer; transition: background .15s;
+    }
+    .sb-item:hover { background: rgba(255,255,255,0.15); }
+    .sb-item.active {
+      background: rgba(255,255,255,0.22);
+      color: white;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+    }
+    .sb-icon { flex-shrink: 0; opacity: 0.9; }
+    .sb-item.active .sb-icon { opacity: 1; }
+    .sb-spacer { flex: 1; min-height: 8px; }
+    /* remove old group label style */
+    .sb-group { display: none; }
+
+    /* ── Content ──────────────────────────────────────────────── */
+    .content {
+      flex: 1;
+      background: var(--off-white);
+      overflow-y: auto;
+      padding: 22px 28px 28px;
+    }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-thumb { background: var(--sand); border-radius: 2px; }
+
+    /* Page header */
+    .pg-head {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .pg-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 24px; letter-spacing: 0.02em;
+      color: var(--forest); line-height: 1.1; margin-bottom: 3px;
+    }
+    .pg-sub { font-size: 11.5px; color: var(--text-ter); }
+    .pg-meta { font-size: 10.5px; color: var(--text-ter); text-align: right; line-height: 1.65; }
+    .pg-meta span { color: var(--sky-deep); font-weight: 500; }
+
+    /* Stat row */
+    .stat-row {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 12px; margin-bottom: 18px;
+    }
+    .stat {
+      border-radius: 11px; padding: 14px 16px 12px;
+      border: 1px solid;
+    }
+    .stat.r { background: var(--red-bg);   border-color: var(--red-bd);   }
+    .stat.a { background: var(--amber-bg); border-color: var(--amber-bd); }
+    .stat.g { background: var(--green-bg); border-color: var(--green-bd); }
+    .stat-lbl {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .stat.r .stat-lbl { color: var(--red);   }
+    .stat.a .stat-lbl { color: var(--amber); }
+    .stat.g .stat-lbl { color: var(--green); }
+    .stat-row-inner { display: flex; align-items: flex-end; justify-content: space-between; }
+    .stat-num { font-size: 38px; font-weight: 300; color: var(--forest); line-height: 1; }
+    .stat-hint { font-size: 10.5px; color: var(--text-ter); margin-top: 2px; }
+    .stat-ico {
+      width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid;
+      display: flex; align-items: center; justify-content: center; opacity: 0.45;
+    }
+    .stat.r .stat-ico { border-color: var(--red);   color: var(--red);   }
+    .stat.a .stat-ico { border-color: var(--amber); color: var(--amber); }
+    .stat.g .stat-ico { border-color: var(--green); color: var(--green); }
+
+    /* Section card */
+    .card {
+      background: white; border: 1px solid var(--sand);
+      border-radius: 11px; margin-bottom: 14px; overflow: hidden;
+    }
+    .card-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 11px 18px; border-bottom: 1px solid var(--warm-linen);
+      background: var(--cream);
+    }
+    .card-title { font-size: 11.5px; font-weight: 600; color: var(--forest); }
+    .card-action { font-size: 10.5px; color: var(--sky-deep); font-weight: 500; cursor: pointer; }
+
+    /* Search */
+    .search-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 18px; border-bottom: 1px solid var(--warm-linen);
+    }
+    .search-inp {
+      flex: 1; background: var(--cream); border: 1px solid var(--sand);
+      border-radius: 7px; padding: 5px 10px;
+      font-family: 'DM Sans', sans-serif; font-size: 11.5px;
+      color: var(--text-ter); outline: none;
+    }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    thead th {
+      background: var(--cream); color: var(--text-ter);
+      font-size: 9.5px; font-weight: 600; letter-spacing: 0.09em;
+      text-transform: uppercase; padding: 8px 14px; text-align: left;
+      border-bottom: 1px solid var(--warm-linen);
+    }
+    tbody tr { border-bottom: 1px solid var(--warm-linen); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(214,232,247,0.18); }
+    tbody td { padding: 9px 14px; color: var(--text-sec); vertical-align: middle; }
+    td.nm { color: var(--sky-deep); font-weight: 600; font-size: 11.5px; }
+
+    /* Badge */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 9.5px; font-weight: 600; letter-spacing: 0.06em;
+      padding: 2px 8px; border-radius: 20px; border: 1px solid; white-space: nowrap;
+    }
+    .bd { width: 4px; height: 4px; border-radius: 50%; }
+    .b-exp { background: var(--red-bg);   border-color: var(--red-bd);   color: var(--red);   }
+    .b-val { background: var(--green-bg); border-color: var(--green-bd); color: var(--green); }
+    .b-amb { background: var(--amber-bg); border-color: var(--amber-bd); color: var(--amber); }
+    .b-inf { background: var(--blue-bg);  border-color: var(--blue-bd);  color: var(--blue);  }
+    .b-neu { background: var(--warm-linen); border-color: var(--sand);   color: var(--text-sec); }
+
+    /* Metric strip */
+    .metrics {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      border-top: 1px solid var(--warm-linen);
+    }
+    .metric {
+      padding: 13px 0; text-align: center;
+      border-right: 1px solid var(--warm-linen);
+    }
+    .metric:last-child { border-right: none; }
+    .m-num { font-size: 26px; font-weight: 300; color: var(--forest); line-height: 1; margin-bottom: 3px; }
+    .m-lbl { font-size: 9px; color: var(--text-ter); font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; }
+
+    /* Dept grid */
+    .dept-grid {
+      display: grid; grid-template-columns: repeat(6,1fr);
+      gap: 10px; padding: 16px 18px;
+    }
+    .dept {
+      background: var(--cream); border: 1px solid var(--sand);
+      border-radius: 9px; padding: 12px 8px; text-align: center;
+      cursor: pointer; transition: all .15s;
+    }
+    .dept:hover { background: var(--sky-pale); border-color: var(--mist); }
+    .dept-ico {
+      width: 28px; height: 28px; margin: 0 auto 6px;
+      background: var(--sky-pale); border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .dept-nm { font-size: 10.5px; color: var(--text-sec); font-weight: 500; }
+
+    /* Bottom panels */
+    .panel-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .panel { background: white; border: 1px solid var(--sand); border-radius: 11px; overflow: hidden; }
+    .panel-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 15px; border-bottom: 1px solid var(--warm-linen);
+      background: var(--cream);
+    }
+    .panel-title { font-size: 11px; font-weight: 600; color: var(--forest); }
+    .panel-body { padding: 0; }
+    .alert-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 15px; border-bottom: 1px solid var(--warm-linen);
+    }
+    .alert-row:last-child { border-bottom: none; }
+    .alert-nm { font-size: 11.5px; font-weight: 600; color: var(--forest); margin-bottom: 2px; }
+    .alert-sub { font-size: 10.5px; color: var(--text-ter); }
+    .empty {
+      padding: 18px 15px; text-align: center;
+      font-size: 11px; color: var(--text-ter);
+    }
+    .empty-ico {
+      width: 28px; height: 28px; margin: 0 auto 8px;
+      border: 1.5px solid var(--sand); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── Footer strip ─────────────────────────────────────────── */
+    .footer {
+      background: var(--forest);
+      height: 36px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 22px; flex-shrink: 0;
+    }
+    .ft-mark {
+      font-family: 'DM Serif Display', serif;
+      font-size: 12px; letter-spacing: 0.14em;
+      color: var(--off-white); opacity: 0.6;
+    }
+    .ft-tag {
+      font-size: 10.5px; color: var(--off-white);
+      opacity: 0.38; letter-spacing: 0.06em; font-style: italic;
+    }
+    .ft-mode {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--sky); opacity: 0.55;
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ── Topbar ────────────────────────────────────────────────── -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <!-- Real Vault logo mark: V-triangle with T-cut, Forest on Sky Blue -->
+      <svg viewBox="0 0 100 100" width="26" height="26">
+        <defs>
+          <mask id="vm">
+            <path d="M8,8 L92,8 L50,96 Z" fill="white"/>
+            <rect x="8"  y="8" width="84" height="9" fill="black"/>
+            <rect x="46" y="8" width="8"  height="88" fill="black"/>
+          </mask>
+        </defs>
+        <rect width="100" height="100" fill="#1B2B1A" mask="url(#vm)"/>
+      </svg>
+      VAULT
+    </div>
+    <div class="topbar-vessel">M/Y ATLAS</div>
+    <div class="topbar-right">
+      <span class="topbar-login">Last login: 08:14 today</span>
+      <div class="topbar-avatar">JH</div>
+    </div>
+  </div>
+
+  <!-- ── Body ──────────────────────────────────────────────────── -->
+  <div class="body">
+
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <!-- Search -->
+      <div class="sb-search">
+        <svg class="sb-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Search" />
+      </div>
+
+      <!-- Dashboard -->
+      <div class="sb-item active">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Dashboard
+      </div>
+
+      <!-- Trip Hub -->
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.5c0 2.5-4.5 5-4.5 5S13 19 13 16.5a4.5 4.5 0 0 1 9 0z"/><circle cx="17.5" cy="16.5" r="1" fill="white"/><path d="M5 18H3a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4"/></svg>
+        Trip Hub
+      </div>
+
+      <!-- Bridge -->
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a4.5 9 0 0 1 0 18 4.5 9 0 0 1 0-18"/><line x1="3" y1="12" x2="21" y2="12"/></svg>
+        Bridge
+      </div>
+
+      <!-- Purser -->
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="12" y2="16"/></svg>
+        Purser
+      </div>
+
+      <!-- Engineering -->
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        Engineering
+      </div>
+
+      <!-- Interior -->
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Interior
+      </div>
+
+      <!-- Deck -->
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 20h16L12 2z"/><line x1="4" y1="15" x2="20" y2="15"/></svg>
+        Deck
+      </div>
+
+      <!-- Galley -->
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+        Galley
+      </div>
+
+      <!-- Projects -->
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round"><path d="M2 20h20"/><path d="M5 20V10l7-7 7 7v10"/><path d="M9 20v-5h6v5"/></svg>
+        Projects
+      </div>
+
+      <!-- Crew -->
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Crew
+      </div>
+
+      <div class="sb-spacer"></div>
+
+      <!-- Settings -->
+      <div class="sb-item">
+        <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </div>
+    </nav>
+
+    <!-- Content -->
+    <main class="content">
+
+      <!-- Page header -->
+      <div class="pg-head">
+        <div>
+          <div class="pg-title">Welcome back, James</div>
+          <div class="pg-sub">Wednesday, 15 April 2026</div>
+        </div>
+        <div class="pg-meta">
+          Last login: 08:14 today<br>
+          <span>M/Y Atlas — all systems nominal</span>
+        </div>
+      </div>
+
+      <!-- Stat cards -->
+      <div class="stat-row">
+        <div class="stat r">
+          <div class="stat-lbl">Expired / Critical</div>
+          <div class="stat-row-inner">
+            <div><div class="stat-num">1</div><div class="stat-hint">Requires immediate action</div></div>
+            <div class="stat-ico">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="0.8" fill="currentColor"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="stat a">
+          <div class="stat-lbl">Expiring Soon</div>
+          <div class="stat-row-inner">
+            <div><div class="stat-num">0</div><div class="stat-hint">Nothing in the next 30 days</div></div>
+            <div class="stat-ico">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="stat g">
+          <div class="stat-lbl">Fully Compliant</div>
+          <div class="stat-row-inner">
+            <div><div class="stat-num">5</div><div class="stat-hint">All documents up to date</div></div>
+            <div class="stat-ico">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compliance table -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Fleet Compliance &amp; Certification Dashboard</span>
+          <span class="card-action">View all →</span>
+        </div>
+        <div class="search-row">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8FA08E" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-inp" type="text" placeholder="Search by name or document type…" />
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Crew Name</th><th>Position</th><th>Document</th><th>Status</th><th>Expiry Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="nm">James Harrison</td><td>Captain</td><td>STCW Certificate</td>
+              <td><span class="badge b-exp"><span class="bd" style="background:var(--red)"></span>Expired</span></td>
+              <td style="color:var(--red);font-weight:600;font-size:11px;">Not Set</td>
+            </tr>
+            <tr>
+              <td class="nm">Sarah Mitchell</td><td>Chief Engineer</td><td>MCA Certificate</td>
+              <td><span class="badge b-val"><span class="bd" style="background:var(--green)"></span>Valid</span></td>
+              <td>Oct 2026</td>
+            </tr>
+            <tr>
+              <td class="nm">Thomas Reed</td><td>Bosun</td><td>Medical Certificate</td>
+              <td><span class="badge b-exp"><span class="bd" style="background:var(--red)"></span>Expired</span></td>
+              <td style="color:var(--red);font-weight:600;font-size:11px;">Feb 2026</td>
+            </tr>
+            <tr>
+              <td class="nm">Olivia Chen</td><td>Stewardess</td><td>ENG1 Medical</td>
+              <td><span class="badge b-val"><span class="bd" style="background:var(--green)"></span>Valid</span></td>
+              <td>Jul 2027</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="metrics">
+          <div class="metric"><div class="m-num">6</div><div class="m-lbl">Active Crew</div></div>
+          <div class="metric"><div class="m-num">3</div><div class="m-lbl">Vessels FTE</div></div>
+          <div class="metric"><div class="m-num">6</div><div class="m-lbl">Crew Documents</div></div>
+          <div class="metric"><div class="m-num">2</div><div class="m-lbl">Equipment Ready</div></div>
+        </div>
+      </div>
+
+      <!-- Departments -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Departments</span>
+        </div>
+        <div class="dept-grid">
+          <div class="dept">
+            <div class="dept-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5A9ED4" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><line x1="12" y1="3" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="21"/><line x1="3" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="21" y2="12"/></svg></div>
+            <div class="dept-nm">Bridge</div>
+          </div>
+          <div class="dept">
+            <div class="dept-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5A9ED4" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/></svg></div>
+            <div class="dept-nm">Purser</div>
+          </div>
+          <div class="dept">
+            <div class="dept-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5A9ED4" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div>
+            <div class="dept-nm">Engineering</div>
+          </div>
+          <div class="dept">
+            <div class="dept-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5A9ED4" stroke-width="1.8" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+            <div class="dept-nm">Interior</div>
+          </div>
+          <div class="dept">
+            <div class="dept-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5A9ED4" stroke-width="1.8" stroke-linecap="round"><path d="M3 17h18M5 17l2-8h10l2 8M12 9V5M9 5h6"/></svg></div>
+            <div class="dept-nm">Deck</div>
+          </div>
+          <div class="dept">
+            <div class="dept-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5A9ED4" stroke-width="1.8" stroke-linecap="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
+            <div class="dept-nm">Galley</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom panels -->
+      <div class="panel-row">
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-title">Maintenance Alerts</span>
+            <span class="card-action">View All →</span>
+          </div>
+          <div class="panel-body">
+            <div class="alert-row">
+              <div>
+                <div class="alert-nm">Fire Extinguisher Inspection</div>
+                <div class="alert-sub">Sun Deck · Scheduled Apr 1, 2026</div>
+              </div>
+              <span class="badge b-exp">Overdue</span>
+            </div>
+            <div class="alert-row">
+              <div>
+                <div class="alert-nm">Port Engine Oil Change</div>
+                <div class="alert-sub">Engineering · Due in 14 days</div>
+              </div>
+              <span class="badge b-amb">Upcoming</span>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-title">Documents Expiring Soon</span>
+            <span class="card-action">View All →</span>
+          </div>
+          <div class="panel-body">
+            <div class="empty">
+              <div class="empty-ico">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8FA08E" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              All documents are up to date
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ── Footer ────────────────────────────────────────────────── -->
+  <div class="footer">
+    <span class="ft-mark">VAULT</span>
+    <span class="ft-tag">Built by crew. For crew.</span>
+    <span class="ft-mode">Day Watch — Light Mode</span>
+  </div>
+
+</div>
+</body>
+</html>
