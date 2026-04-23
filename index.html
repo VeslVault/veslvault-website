@@ -165,7 +165,7 @@
     }
     .split-photo-wrap { position: relative; overflow: hidden; min-height: 280px; }
     .split-photo-wrap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    @media (max-width: 767px) { .split-photo-wrap.tall { min-height: 420px; } }
+    @media (max-width: 767px) { .split-photo-wrap.tall { min-height: 260px; } }
 
     /* ── STAT ROW ─────────────────────────────────────── */
     .stats { display: flex; margin-top: 32px; border-top: 1px solid var(--linen); padding-top: 24px; }
@@ -428,7 +428,7 @@
 <!-- ══════════════ THE PROBLEM ═══════════════════════════ -->
 <section class="section" style="background:var(--cream)">
   <div class="split">
-    <div style="flex:1" class="inner fu">
+    <div style="flex:1;padding-bottom:0" class="inner fu">
       <div class="pill pill-dk">THE PROBLEM</div>
       <div class="h1 h1-dark" style="font-size:clamp(24px,3.5vw,38px)">Managing a Superyacht is a full-time operation — with part-time tools.</div>
       <div class="div div-dk"></div>
@@ -449,7 +449,7 @@
       </div>
     </div>
     <div class="split-photo-wrap tall">
-      <img src="Sample%202/4.jpg" alt="Engineering" style="object-position:center 35%" />
+      <img src="Sample%202/4.jpg" alt="Engineering" style="object-position:center center" />
     </div>
   </div>
 </section>
