@@ -2,17 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VAULT — The Operating System for Superyachts</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <!-- Send desktop visitors to the desktop site -->
-  <script>
-    (function(){
-      var isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-                  || window.innerWidth <= 768;
-      if (!isMobile) { window.location.replace('index.html'); }
-    })();
-  </script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,465 +17,358 @@
       --linen:       #EBE6DB;
       --sand:        #D8D3C5;
       --sky:         #87BCED;
+      --mist:        #B8CBE8;
       --sky-deep:    #5A9ED4;
       --sky-pale:    #D6E8F7;
+      --toggle-blue: #4A8CF7;
       --text-sec:    #5A6B59;
       --text-ter:    #8FA08E;
-      --nav-h:       56px;
+      --border-light:#EBE6DB;
+      --nav-h:       58px;
     }
 
-    html {
-      scroll-behavior: smooth;
-      -webkit-font-smoothing: antialiased;
-    }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
     body {
       font-family: 'DM Sans', sans-serif;
-      background: var(--midnight);
-      color: var(--off-white);
+      background: var(--cream);
+      color: var(--forest);
       overflow-x: hidden;
     }
 
-    /* ── NAV ───────────────────────────────────────────── */
-    .topnav {
+    /* ── NAV ──────────────────────────────────────────── */
+    .nav {
       position: fixed; top: 0; left: 0; right: 0;
-      height: var(--nav-h);
-      z-index: 200;
+      height: var(--nav-h); z-index: 300;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 22px;
-      background: rgba(13,21,13,0.92);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(135,188,237,0.1);
+      padding: 0 clamp(20px, 4vw, 48px);
+      background: rgba(245,242,235,0.97);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-light);
       transition: background 0.4s, border-color 0.4s;
     }
-    .topnav.nav-light {
-      background: rgba(245,242,235,0.97);
-      border-bottom-color: rgba(235,230,219,0.9);
-    }
     .nav-brand {
-      display: flex; align-items: center; gap: 9px;
+      display: flex; align-items: center; gap: 10px;
       font-family: 'DM Serif Display', serif;
       font-size: 14px; letter-spacing: 0.18em;
-      color: var(--off-white);
-      text-decoration: none;
+      color: var(--forest); text-decoration: none;
     }
-    .topnav.nav-light .nav-brand { color: var(--forest); }
-    .topnav.nav-light .nav-brand-mark rect { fill: var(--forest); }
+    .nav-brand-mark rect { fill: var(--forest); }
+    .nav-links {
+      display: none; align-items: center; gap: 28px;
+    }
+    @media (min-width: 768px) { .nav-links { display: flex; } }
+    .nav-link {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
+      color: rgba(27,43,26,0.48); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-link:hover { color: var(--sky-deep); }
     .nav-cta {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
-      padding: 8px 16px; border-radius: 20px;
-      background: var(--off-white); color: var(--midnight);
-      text-decoration: none; border: none; cursor: pointer;
-      transition: opacity 0.2s;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+      padding: 9px 18px; border-radius: 22px;
+      background: var(--toggle-blue); color: #fff;
+      text-decoration: none; transition: background 0.2s;
+      white-space: nowrap;
     }
-    .topnav.nav-light .nav-cta {
-      background: var(--midnight); color: var(--off-white);
-    }
-    .nav-cta:active { opacity: 0.75; }
+    .nav-cta:hover { background: #3a7be6; }
 
-    /* ── SECTION BASE ───────────────────────────────────── */
-    section { width: 100%; position: relative; }
-
-    /* ── HERO ───────────────────────────────────────────── */
+    /* ── HERO ─────────────────────────────────────────── */
     .hero {
-      height: 100svh;
-      min-height: 600px;
-      position: relative;
-      overflow: hidden;
-      background: var(--forest);
+      height: 100svh; min-height: 600px;
+      position: relative; overflow: hidden; background: var(--forest);
     }
     .hero-img {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
+      position: absolute; inset: 0; width: 100%; height: 100%;
       object-fit: cover; object-position: center 25%;
-      filter: brightness(0.62);
+      filter: brightness(0.82);
     }
     .hero-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(180deg,rgba(13,21,13,0.18) 0%,rgba(13,21,13,0.72) 100%);
+      background: linear-gradient(180deg, rgba(13,21,13,0.04) 0%, rgba(13,21,13,0.52) 100%);
     }
     .hero-content {
-      position: relative; z-index: 10;
-      height: 100%;
+      position: relative; z-index: 10; height: 100%;
       display: flex; flex-direction: column;
       align-items: center; justify-content: flex-end;
-      padding: var(--nav-h) 28px 64px;
+      padding: var(--nav-h) clamp(24px,5vw,80px) clamp(52px,7vw,88px);
       text-align: center;
     }
-    .hero-logo-mark {
-      margin-bottom: 20px;
-      opacity: 0.92;
-    }
-    .hero-wordmark {
+    .hero-logo { margin-bottom: 22px; opacity: 0.94; }
+    .hero-word {
       font-family: 'DM Serif Display', serif;
-      font-size: 72px; letter-spacing: 0.16em;
-      color: var(--off-white); line-height: 1;
-      margin-bottom: 12px;
+      font-size: clamp(64px,12vw,108px);
+      letter-spacing: 0.16em; color: var(--off-white); line-height: 1; margin-bottom: 14px;
     }
-    .hero-rule {
-      width: 36px; height: 1.5px;
-      background: rgba(255,255,255,0.25);
-      border-radius: 2px; margin: 0 auto 14px;
-    }
+    .hero-rule { width: 36px; height: 1.5px; background: rgba(255,255,255,0.28); border-radius: 2px; margin: 0 auto 14px; }
     .hero-tagline {
-      font-size: 13px; font-weight: 300;
-      letter-spacing: 0.04em;
-      color: rgba(255,255,255,0.58);
-      line-height: 1.6; margin-bottom: 6px;
-      font-style: italic;
-      font-family: 'DM Serif Display', serif;
+      font-family: 'DM Serif Display', serif; font-style: italic;
+      font-size: clamp(14px,2vw,20px); color: rgba(255,255,255,0.7); margin-bottom: 6px;
     }
     .hero-sub {
-      font-size: 12px; font-weight: 400;
-      color: rgba(255,255,255,0.38);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 36px;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.16em;
+      color: rgba(255,255,255,0.38); text-transform: uppercase; margin-bottom: 36px;
     }
     .hero-cta {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--sky); color: var(--midnight);
-      font-size: 12px; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 14px 28px; border-radius: 30px;
-      text-decoration: none;
-      -webkit-tap-highlight-color: transparent;
+      display: inline-flex; align-items: center; gap: 9px;
+      background: var(--toggle-blue); color: #fff;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 15px 30px; border-radius: 30px;
+      text-decoration: none; transition: background 0.2s;
     }
-    .hero-scroll-hint {
-      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 5px;
-      opacity: 0.3;
+    .hero-cta:hover { background: #3a7be6; }
+    .hero-scroll {
+      position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 5px; opacity: 0.3;
     }
-    .hero-scroll-hint span {
-      font-size: 9px; letter-spacing: 0.14em;
-      text-transform: uppercase; color: white; font-weight: 600;
+    .hero-scroll span { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: white; font-weight: 600; }
+
+    /* ── SHARED SECTION SPACING ───────────────────────── */
+    .section { width: 100%; position: relative; }
+    .inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: clamp(52px,7vw,88px) clamp(22px,5vw,72px);
     }
 
-    /* ── FEATURE GRID (hero page) ──────────────────────── */
-    .feat-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 10px; margin-top: 28px; width: 100%;
-    }
-    .feat-item {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 12px; padding: 14px;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .feat-icon {
-      width: 34px; height: 34px; border-radius: 8px;
-      background: rgba(135,188,237,0.1);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .feat-name { font-size: 12px; font-weight: 600; color: var(--off-white); }
-    .feat-sub { font-size: 10px; color: rgba(255,255,255,0.38); margin-top: 2px; }
-
-    /* ── PILL LABEL ─────────────────────────────────────── */
+    /* ── PILLS ────────────────────────────────────────── */
     .pill {
-      display: inline-block;
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      padding: 5px 12px; border-radius: 20px;
-      border: 1px solid rgba(135,188,237,0.3);
-      color: var(--sky); margin-bottom: 18px;
+      display: inline-flex; align-items: center;
+      background: rgba(135,188,237,0.12); border: 1px solid rgba(135,188,237,0.28);
+      border-radius: 20px; padding: 5px 16px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      color: var(--sky-deep); text-transform: uppercase; margin-bottom: 18px;
     }
     .pill-dk {
-      border-color: rgba(27,43,26,0.25);
+      background: rgba(27,43,26,0.07); border-color: rgba(27,43,26,0.2);
       color: var(--text-ter);
     }
 
-    /* ── DIVIDER ────────────────────────────────────────── */
-    .divider {
-      width: 36px; height: 1.5px;
-      background: rgba(135,188,237,0.3);
-      border-radius: 2px; margin: 18px 0;
-    }
-    .divider-dk {
-      background: rgba(27,43,26,0.2);
-    }
+    /* ── DIVIDERS ─────────────────────────────────────── */
+    .div { width: 40px; height: 2px; background: var(--sky); border-radius: 1px; margin: 20px 0; }
+    .div-dk { background: var(--forest); opacity: 0.3; }
 
-    /* ── SECTION TEXT BLOCKS ────────────────────────────── */
-    .section-inner {
-      padding: 64px 24px;
-    }
-    .section-inner.tight { padding: 52px 24px; }
-
-    .overline {
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--text-ter); margin-bottom: 14px;
-    }
-    .overline-sky { color: var(--sky); }
-
-    .serif-h1 {
+    /* ── TYPOGRAPHY ───────────────────────────────────── */
+    .h1 {
       font-family: 'DM Serif Display', serif;
-      font-size: 34px; line-height: 1.15;
-      color: var(--off-white); margin-bottom: 0;
+      font-size: clamp(28px,4vw,48px); line-height: 1.15;
     }
-    .serif-h1-dk { color: var(--forest); }
+    .h1-light { color: var(--off-white); }
+    .h1-dark  { color: var(--forest); }
+    .body-light { font-size: clamp(13px,1.5vw,15px); font-weight: 300; line-height: 1.8; color: rgba(255,255,255,0.6); }
+    .body-dark  { font-size: clamp(13px,1.5vw,15px); font-weight: 400; line-height: 1.75; color: var(--text-sec); }
 
-    .body-text {
-      font-size: 14px; font-weight: 300;
-      line-height: 1.8; color: rgba(255,255,255,0.55);
+    /* ── SPLIT LAYOUT ─────────────────────────────────── */
+    .split { display: flex; flex-direction: column; }
+    @media (min-width: 768px) {
+      .split { flex-direction: row; align-items: stretch; }
+      .split-text { width: 55%; }
+      .split-photo-wrap { width: 45%; }
     }
-    .body-text-dk { color: var(--text-sec); }
+    .split-photo-wrap { position: relative; overflow: hidden; min-height: 280px; }
+    .split-photo-wrap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
-    /* ── PHOTO BLOCK ────────────────────────────────────── */
-    .photo-block {
-      width: 100%; aspect-ratio: 3/2;
-      overflow: hidden; position: relative;
-    }
-    .photo-block img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-    }
+    /* ── STAT ROW ─────────────────────────────────────── */
+    .stats { display: flex; margin-top: 32px; border-top: 1px solid var(--linen); padding-top: 24px; }
+    .stat { flex: 1; text-align: center; }
+    .stat + .stat { border-left: 1px solid var(--linen); }
+    .stat-n { font-family: 'DM Serif Display', serif; font-size: clamp(32px,4vw,44px); color: var(--forest); line-height: 1; }
+    .stat-r { width: 24px; height: 1.5px; background: var(--forest); margin: 8px auto 6px; border-radius: 1px; }
+    .stat-l { font-size: 9.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-ter); }
 
-    /* ── STAT ROW ──────────────────────────────────────── */
-    .stat-row {
-      display: flex; gap: 0;
-      margin-top: 32px;
-      border-top: 1px solid rgba(27,43,26,0.12);
-      padding-top: 24px;
-    }
-    .stat-item { flex: 1; text-align: center; }
-    .stat-item + .stat-item {
-      border-left: 1px solid rgba(27,43,26,0.12);
-    }
-    .stat-num {
-      font-family: 'DM Serif Display', serif;
-      font-size: 36px; color: var(--forest);
-    }
-    .stat-lbl {
-      font-size: 9px; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--text-ter); margin-top: 4px;
-    }
+    /* ── DARK BG SECTION ──────────────────────────────── */
+    .dark-s { position: relative; overflow: hidden; background: var(--midnight); }
+    .dark-s-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .dark-s-ov  { position: absolute; inset: 0; }
+    .dark-s-in  { position: relative; z-index: 10; }
 
-    /* ── BG PHOTO SECTION ──────────────────────────────── */
-    .bg-section {
-      position: relative; overflow: hidden;
-      background: var(--midnight);
-    }
-    .bg-section-img {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-    }
-    .bg-section-overlay {
-      position: absolute; inset: 0;
-    }
+    /* ── QUOTE ────────────────────────────────────────── */
+    .quote { margin-top: 28px; padding: 18px 22px; border: 1px solid rgba(135,188,237,0.22); border-radius: 12px; background: rgba(135,188,237,0.06); }
+    .quote-t { font-family: 'DM Serif Display', serif; font-size: clamp(16px,2vw,19px); color: var(--sky); font-style: italic; line-height: 1.5; }
+    .quote-a { font-size: 9px; color: rgba(255,255,255,0.3); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; margin-top: 8px; }
 
-    /* ── QUOTE CARD ─────────────────────────────────────── */
-    .quote-card {
-      margin-top: 28px;
-      padding: 18px 20px;
-      border: 1px solid rgba(135,188,237,0.2);
-      border-radius: 12px;
-      background: rgba(135,188,237,0.06);
-    }
-    .quote-text {
-      font-family: 'DM Serif Display', serif;
-      font-size: 17px; color: var(--sky);
-      font-style: italic; line-height: 1.5;
-    }
-    .quote-attr {
-      font-size: 9px; color: rgba(255,255,255,0.3);
-      letter-spacing: 0.1em; text-transform: uppercase;
-      font-weight: 700; margin-top: 8px;
-    }
-
-    /* ── PROBLEM CARDS ──────────────────────────────────── */
+    /* ── PROBLEM CARDS (white cards on cream) ─────────── */
+    .prob-cards { margin-top: 20px; }
     .prob-card {
-      display: flex; gap: 14px; align-items: flex-start;
-      padding: 18px 0;
-      border-bottom: 1px solid rgba(27,43,26,0.1);
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 18px; border: 1px solid var(--sand);
+      border-radius: 12px; background: #fff; margin-bottom: 10px;
+      box-shadow: 0 1px 4px rgba(27,43,26,0.05);
     }
-    .prob-card:last-child { border-bottom: none; }
-    .prob-icon {
-      width: 36px; height: 36px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .prob-title {
-      font-size: 13px; font-weight: 600;
-      color: var(--forest); margin-bottom: 4px;
-    }
-    .prob-desc {
-      font-size: 12px; color: var(--text-sec); line-height: 1.6;
-    }
+    .prob-card:last-child { margin-bottom: 0; }
+    .prob-ico { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .prob-title { font-size: clamp(12px,1.4vw,13px); font-weight: 600; color: var(--forest); margin-bottom: 3px; }
+    .prob-desc  { font-size: clamp(11px,1.2vw,12px); color: var(--text-sec); line-height: 1.6; }
 
-    /* ── SOLUTION FEATURES ──────────────────────────────── */
-    .feat-list { display: flex; flex-direction: column; gap: 0; }
-    .feat-row {
-      display: flex; align-items: flex-start; gap: 14px;
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(135,188,237,0.1);
-    }
-    .feat-row:last-child { border-bottom: none; }
-    .feat-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--sky); flex-shrink: 0;
-      margin-top: 7px;
-    }
-    .feat-head { font-size: 13px; font-weight: 600; color: var(--off-white); margin-bottom: 3px; }
-    .feat-sub-txt { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.6; }
+    /* ── SOLUTION FEATURE LIST ────────────────────────── */
+    .feat-list { margin-top: 4px; }
+    .feat { display: flex; align-items: flex-start; gap: 14px; padding: 16px 0; border-bottom: 1px solid rgba(135,188,237,0.12); }
+    .feat:last-child { border-bottom: none; }
+    .feat-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sky); flex-shrink: 0; margin-top: 7px; }
+    .feat-h { font-size: clamp(13px,1.5vw,14px); font-weight: 600; color: var(--off-white); margin-bottom: 3px; }
+    .feat-s { font-size: clamp(11px,1.3vw,12px); color: rgba(255,255,255,0.5); line-height: 1.65; }
 
-    /* ── PORTAL GRID ─────────────────────────────────────── */
-    .portal-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 10px; margin-top: 24px;
+    /* ── CAPABILITY GRID (cream cards, light theme) ───── */
+    .cap-grid {
+      display: grid; grid-template-columns: repeat(2,1fr);
+      gap: 10px; margin-top: 28px;
     }
-    .portal-card {
+    @media (min-width: 768px) { .cap-grid { grid-template-columns: repeat(3,1fr); } }
+    .cap-item {
+      background: var(--cream); border: 1px solid var(--border-light);
+      border-radius: 13px; padding: 14px 13px;
+      display: flex; align-items: center; gap: 11px;
+      transition: border-color 0.18s, background 0.18s;
+    }
+    .cap-item:hover { border-color: var(--mist); background: var(--sky-pale); }
+    .cap-ico {
+      width: 34px; height: 34px; border-radius: 8px;
+      background: var(--sky-pale); border: 1px solid var(--mist);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: background 0.18s;
+    }
+    .cap-item:hover .cap-ico { background: rgba(135,188,237,0.35); }
+    .cap-name { font-size: 12px; font-weight: 500; color: var(--forest); line-height: 1.3; }
+    .cap-sub  { font-size: 10.5px; color: var(--text-ter); margin-top: 1px; font-weight: 300; }
+
+    /* ════════════════════════════════════════════════════
+       PORTAL SECTIONS — Light theme
+    ════════════════════════════════════════════════════ */
+    .portal-s {
+      padding: clamp(48px,6vw,72px) clamp(22px,5vw,64px);
+    }
+    .portal-s.light-1 { background: var(--off-white); }
+    .portal-s.light-2 { background: var(--cream); }
+    /* Dark portal sections */
+    .portal-s.dark-1 { background: var(--midnight); }
+    .portal-s.dark-1 .portal-eyebrow { color: rgba(135,188,237,0.55); }
+    .portal-s.dark-1 .portal-title { color: var(--off-white); }
+    .portal-s.dark-1 .portal-desc { color: rgba(250,250,248,0.5); }
+    .portal-s.dark-1 .portal-img-wrap {
+      border-color: rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.03);
+      box-shadow: 0 2px 24px rgba(0,0,0,0.35);
+    }
+    .portal-s.dark-1 .portal-img-wrap:hover { box-shadow: 0 6px 40px rgba(0,0,0,0.5); }
+    .portal-s.dark-1 .portal-img-label {
       background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(135,188,237,0.12);
-      border-radius: 12px; padding: 16px 14px;
-      text-decoration: none;
-      display: block;
-      position: relative;
-      -webkit-tap-highlight-color: transparent;
-      transition: background 0.18s, border-color 0.18s;
+      color: rgba(250,250,248,0.38);
+      border-top-color: rgba(255,255,255,0.07);
     }
-    .portal-card:active {
-      background: rgba(135,188,237,0.08);
-      border-color: rgba(135,188,237,0.3);
+    .portal-s-wrap { max-width: 1100px; margin: 0 auto; }
+
+    .portal-hd { text-align: center; margin-bottom: 28px; }
+    .portal-eyebrow {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--text-ter); margin-bottom: 8px;
     }
-    .portal-num {
-      font-size: 8px; font-weight: 700;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--sky); opacity: 0.6; margin-bottom: 6px;
-    }
-    .portal-name {
-      font-size: 13px; font-weight: 600;
-      color: var(--off-white); margin-bottom: 3px;
+    .portal-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(22px,3vw,30px); color: var(--forest); line-height: 1.2; margin-bottom: 8px;
     }
     .portal-desc {
-      font-size: 11px; color: rgba(255,255,255,0.38);
-      line-height: 1.5;
+      font-size: clamp(12px,1.4vw,13px); color: var(--text-sec);
+      max-width: 500px; margin: 0 auto; line-height: 1.65;
     }
-    .portal-arrow {
-      position: absolute; top: 14px; right: 14px;
-      color: rgba(135,188,237,0.4);
+    /* Two-up grid */
+    .portal-pair {
+      display: grid; grid-template-columns: 1fr; gap: 16px;
     }
+    @media (min-width: 640px) { .portal-pair { grid-template-columns: 1fr 1fr; gap: 20px; } }
+    .portal-img-wrap {
+      border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--sand);
+      background: #fff;
+      box-shadow: 0 2px 16px rgba(27,43,26,0.07), 0 0 0 0 transparent;
+      transition: box-shadow 0.2s;
+    }
+    .portal-img-wrap:hover { box-shadow: 0 6px 32px rgba(27,43,26,0.13); }
+    .portal-img-wrap img { width: 100%; height: auto; display: block; }
+    .portal-img-label {
+      padding: 10px 14px; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-ter); border-top: 1px solid var(--border-light);
+      background: var(--cream);
+    }
+    .portal-solo { max-width: 800px; margin: 0 auto; }
 
-    /* ── AUDIENCE CARDS ─────────────────────────────────── */
+    /* ── AUDIENCE CARDS ───────────────────────────────── */
+    .aud-grid {
+      display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 28px;
+    }
+    @media (min-width: 768px) { .aud-grid { grid-template-columns: repeat(3,1fr); } }
     .aud-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(135,188,237,0.1);
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(135,188,237,0.12);
       border-radius: 14px; padding: 22px 18px;
-      margin-bottom: 12px;
     }
-    .aud-icon {
-      width: 40px; height: 40px; border-radius: 10px;
-      background: rgba(135,188,237,0.08);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 12px;
-    }
-    .aud-title {
-      font-size: 15px; font-weight: 600;
-      color: var(--off-white); margin-bottom: 6px;
-    }
-    .aud-desc {
-      font-size: 13px; color: rgba(255,255,255,0.5);
-      line-height: 1.65;
-    }
+    .aud-ico { width: 40px; height: 40px; border-radius: 10px; background: rgba(135,188,237,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+    .aud-t { font-size: clamp(14px,1.6vw,16px); font-weight: 600; color: var(--off-white); margin-bottom: 6px; }
+    .aud-d { font-size: clamp(12px,1.3vw,13px); color: rgba(255,255,255,0.5); line-height: 1.65; }
 
-    /* ── CTA BUTTONS ────────────────────────────────────── */
+    /* ── GHOST CTA BUTTONS ────────────────────────────── */
     .btn-ghost {
       display: flex; align-items: center; gap: 10px;
-      padding: 16px 22px; border-radius: 50px;
-      border: 1px solid rgba(135,188,237,0.35);
-      color: var(--sky); font-size: 13px;
-      font-weight: 600; letter-spacing: 0.03em;
-      text-decoration: none; background: transparent;
-      -webkit-tap-highlight-color: transparent;
-      transition: background 0.2s;
+      padding: 15px 22px; border-radius: 50px;
+      border: 1px solid rgba(135,188,237,0.38); color: var(--sky);
+      font-size: clamp(12px,1.4vw,14px); font-weight: 500;
+      letter-spacing: 0.03em; text-decoration: none; background: transparent;
+      cursor: pointer; transition: background 0.2s, border-color 0.2s;
       width: 100%;
     }
-    .btn-ghost:active { background: rgba(135,188,237,0.08); }
+    .btn-ghost:hover { background: rgba(135,188,237,0.1); border-color: rgba(135,188,237,0.55); }
+    .cta-pair { display: flex; flex-direction: column; gap: 12px; }
+    @media (min-width: 640px) { .cta-pair { flex-direction: row; } .btn-ghost { width: auto; } }
 
-    /* ── CONTACT STATS ─────────────────────────────────── */
-    .contact-stats {
-      display: flex; gap: 0;
-      margin-top: 40px; padding-top: 24px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-    .contact-stat { flex: 1; text-align: center; }
-    .contact-stat + .contact-stat {
-      border-left: 1px solid rgba(255,255,255,0.08);
-    }
-    .cstat-num {
-      font-family: 'DM Serif Display', serif;
-      font-size: 28px; color: var(--sky);
-    }
-    .cstat-lbl {
-      font-size: 8px; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: rgba(255,255,255,0.28); margin-top: 4px;
-    }
+    /* ── CONTACT STATS ────────────────────────────────── */
+    .c-stats { display: flex; margin-top: 40px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .c-stat { flex: 1; text-align: center; }
+    .c-stat + .c-stat { border-left: 1px solid rgba(255,255,255,0.08); }
+    .c-n { font-family: 'DM Serif Display', serif; font-size: clamp(24px,3vw,32px); color: var(--sky); }
+    .c-l { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-top: 4px; }
 
-    /* ── FOOTER ─────────────────────────────────────────── */
-    .site-footer {
-      background: var(--midnight);
-      border-top: 1px solid rgba(135,188,237,0.08);
-      padding: 24px 24px 36px;
-      display: flex; flex-direction: column;
-      align-items: center; gap: 8px;
-      text-align: center;
+    /* ── FOOTER ───────────────────────────────────────── */
+    .footer {
+      background: var(--cream); border-top: 1px solid var(--linen);
+      padding: 28px clamp(22px,5vw,64px) 40px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;
     }
-    .footer-brand {
-      display: flex; align-items: center; gap: 8px;
-      font-family: 'DM Serif Display', serif;
-      font-size: 12px; letter-spacing: 0.16em;
-      color: rgba(255,255,255,0.4);
-    }
-    .footer-tagline {
-      font-size: 10px; color: rgba(255,255,255,0.2);
-      letter-spacing: 0.06em;
-    }
-    .footer-meta {
-      font-size: 10px; color: rgba(255,255,255,0.16);
-      margin-top: 4px;
-    }
+    .footer-brand { display: flex; align-items: center; gap: 8px; font-family: 'DM Serif Display', serif; font-size: 12px; letter-spacing: 0.16em; color: var(--text-ter); }
+    .footer-tag  { font-size: 10px; color: var(--text-ter); letter-spacing: 0.06em; font-style: italic; font-family: 'DM Serif Display', serif; }
+    .footer-meta { font-size: 10px; color: var(--sand); margin-top: 2px; }
 
-    /* ── SECTION TRANSITIONS ────────────────────────────── */
-    .fade-up {
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .fade-up.visible {
-      opacity: 1; transform: translateY(0);
-    }
+    /* ── FADE-UP ──────────────────────────────────────── */
+    .fu { opacity: 0; transform: translateY(22px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .fu.in { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
-<!-- ── NAV ─────────────────────────────────────────────── -->
-<nav class="topnav" id="topnav">
+<!-- ── NAV ──────────────────────────────────────────────── -->
+<nav class="nav" id="nav">
   <a class="nav-brand" href="#">
-    <svg class="nav-brand-mark" viewBox="0 0 100 100" width="22" height="22">
-      <defs><mask id="vnm">
-        <path d="M8,8 L92,8 L50,96 Z" fill="white"/>
-        <rect x="8" y="8" width="84" height="9" fill="black"/>
-        <rect x="46" y="8" width="8" height="88" fill="black"/>
-      </mask></defs>
-      <rect width="100" height="100" fill="#FAFAF8" mask="url(#vnm)"/>
+    <svg viewBox="0 0 100 100" width="22" height="22">
+      <defs><mask id="nm"><path d="M8,8 L92,8 L50,96 Z" fill="white"/><rect x="8" y="8" width="84" height="9" fill="black"/><rect x="46" y="8" width="8" height="88" fill="black"/></mask></defs>
+      <rect class="nav-brand-mark" width="100" height="100" fill="#1B2B1A" mask="url(#nm)"/>
     </svg>
     VAULT
   </a>
+  <div class="nav-links">
+    <a class="nav-link" href="#platform">Platform</a>
+    <a class="nav-link" href="#portals">Portals</a>
+    <a class="nav-link" href="#who">Who It's For</a>
+    <a class="nav-link" href="#contact">Contact</a>
+  </div>
   <a class="nav-cta" href="mailto:info@veslvault.com?subject=Vault%20Early%20Access%20Request">Request Access</a>
 </nav>
 
-<!-- ═══════════════ 01 · HERO ════════════════════════════ -->
-<section class="hero" id="hero">
+<!-- ══════════════ HERO ══════════════════════════════════ -->
+<section class="hero">
   <img class="hero-img" src="vault-hero.jpg" alt="Vault — Superyacht" />
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <svg class="hero-logo-mark" width="42" height="44" viewBox="0 0 100 104" fill="none">
-      <defs><mask id="vmH"><rect width="100" height="104" fill="black"/><path d="M8,8 L92,8 L50,96 Z" fill="white"/><rect x="8" y="8" width="84" height="9" fill="black"/><rect x="46" y="8" width="8" height="88" fill="black"/></mask></defs>
-      <rect width="100" height="104" fill="#FAFAF8" mask="url(#vmH)"/>
+    <svg class="hero-logo" width="44" height="46" viewBox="0 0 100 104" fill="none">
+      <defs><mask id="hm"><rect width="100" height="104" fill="black"/><path d="M8,8 L92,8 L50,96 Z" fill="white"/><rect x="8" y="8" width="84" height="9" fill="black"/><rect x="46" y="8" width="8" height="88" fill="black"/></mask></defs>
+      <rect width="100" height="104" fill="#FAFAF8" mask="url(#hm)"/>
     </svg>
-    <div class="hero-wordmark">VAULT</div>
+    <div class="hero-word">VAULT</div>
     <div class="hero-rule"></div>
     <div class="hero-tagline">The Operating System for Superyachts</div>
     <div class="hero-sub">Vessel Management Platform</div>
@@ -492,364 +377,261 @@
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
     </a>
   </div>
-  <div class="hero-scroll-hint">
+  <div class="hero-scroll">
     <span>Scroll</span>
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
   </div>
 </section>
 
-<!-- ═══════════════ 02 · WHO WE ARE ══════════════════════ -->
-<section style="background:var(--off-white)">
-  <div class="photo-block fade-up">
-    <img src="Sample%202/2.jpg" alt="Superyacht at sea" style="object-position:center 40%" />
-  </div>
-  <div class="section-inner fade-up">
-    <div class="pill pill-dk">WHO WE ARE</div>
-    <div class="serif-h1 serif-h1-dk" style="font-size:30px;line-height:1.2">We believe every Superyacht deserves software that works as hard as its Crew.</div>
-    <div class="divider divider-dk"></div>
-    <p class="body-text body-text-dk" style="margin-bottom:14px">
-      Vault is a unified vessel management platform built from the ground up for the superyacht industry. Compliance, finance, crew management, technical operations, hospitality, and voyage planning — all in one designed system.
-    </p>
-    <p class="body-text body-text-dk">
-      We're not a software company that stumbled into yachting. We're mariners who built the tool we always wish we had, until now.
-    </p>
-    <div class="stat-row">
-      <div class="stat-item">
-        <div class="stat-num">11+</div>
-        <div class="stat-lbl">Integrated Portals</div>
+<!-- ══════════════ WHO WE ARE ════════════════════════════ -->
+<section class="section" style="background:var(--off-white)">
+  <div class="split">
+    <div class="split-text inner fu">
+      <div class="pill pill-dk">WHO WE ARE</div>
+      <div class="h1 h1-dark">We believe every Superyacht deserves software that works as hard as its Crew.</div>
+      <div class="div div-dk"></div>
+      <p class="body-dark" style="margin-bottom:14px">Vault is a unified vessel management platform built from the ground up for the superyacht industry. Compliance, finance, crew management, technical operations, hospitality, and voyage planning — all in one designed system.</p>
+      <p class="body-dark">We're not a software company that stumbled into yachting. We're mariners who built the tool we always wish we had, until now.</p>
+      <div class="stats">
+        <div class="stat"><div class="stat-n">11+</div><div class="stat-r"></div><div class="stat-l">Integrated Portals</div></div>
+        <div class="stat"><div class="stat-n">1</div><div class="stat-r"></div><div class="stat-l">Unified Platform</div></div>
       </div>
-      <div class="stat-item">
-        <div class="stat-num">1</div>
-        <div class="stat-lbl">Unified Platform</div>
-      </div>
+    </div>
+    <div class="split-photo-wrap">
+      <img src="Sample%202/2.jpg" alt="Superyacht at sea" style="object-position:center 40%" />
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ 03 · OUR STORY ══════════════════════ -->
-<section class="bg-section" style="min-height:auto">
-  <img class="bg-section-img" src="Sample%202/3.jpg" alt="Yacht at sea" style="object-position:center;opacity:0.35" />
-  <div class="bg-section-overlay" style="background:linear-gradient(180deg,rgba(13,21,13,0.7) 0%,rgba(13,21,13,0.88) 100%)"></div>
-  <div class="section-inner" style="position:relative;z-index:10">
-    <div class="pill fade-up">OUR STORY</div>
-    <div class="serif-h1 fade-up" style="font-size:32px">Born at Sea.<br>Built on Experience.</div>
-    <div class="divider fade-up"></div>
-    <p class="body-text fade-up" style="margin-bottom:14px">Vault was born from real frustration. Managing a superyacht is extraordinarily complex — and the tools available were built for offices, not vessels crossing oceans.</p>
-    <p class="body-text fade-up" style="margin-bottom:14px">Crew information lived in email threads. Maintenance logs were on paper. Budget tracking meant twelve different spreadsheets scattered across a dozen folders no one could find under pressure.</p>
-    <p class="body-text fade-up">We set out to change that. Not by digitising the chaos, but by rethinking how a vessel should be managed from the ground up.</p>
-    <div class="quote-card fade-up">
-      <div class="quote-text">"Built by Crew, for Crew."</div>
-      <div class="quote-attr">— THE VAULT PRINCIPLE</div>
+<!-- ══════════════ OUR STORY ═════════════════════════════ -->
+<section class="dark-s">
+  <img class="dark-s-img" src="Sample%202/3.jpg" alt="Yacht at sea" style="opacity:0.62" />
+  <div class="dark-s-ov" style="background:linear-gradient(180deg,rgba(13,21,13,0.42) 0%,rgba(13,21,13,0.68) 100%)"></div>
+  <div class="dark-s-in inner fu">
+    <div class="pill">OUR STORY</div>
+    <div class="h1 h1-light" style="font-size:clamp(28px,4vw,44px)">Born at Sea.<br>Built on Experience.</div>
+    <div class="div"></div>
+    <p class="body-light" style="margin-bottom:14px">Vault was born from real frustration. Managing a superyacht is extraordinarily complex — and the tools available were built for offices, not vessels crossing oceans.</p>
+    <p class="body-light" style="margin-bottom:14px">Crew information lived in email threads. Maintenance logs were on paper. Budget tracking meant twelve different spreadsheets scattered across a dozen folders no one could find under pressure.</p>
+    <p class="body-light">We set out to change that. Not by digitising the chaos, but by rethinking how a vessel should be managed from the ground up.</p>
+    <div class="quote">
+      <div class="quote-t">"Built by Crew, for Crew."</div>
+      <div class="quote-a">— THE VAULT PRINCIPLE</div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ 04 · THE PROBLEM ════════════════════ -->
-<section style="background:var(--off-white)">
-  <div class="photo-block fade-up" style="aspect-ratio:16/9">
-    <img src="Sample%202/4.jpg" alt="Vessel operations" style="object-position:center 35%" />
-  </div>
-  <div class="section-inner fade-up">
-    <div class="pill pill-dk">THE PROBLEM</div>
-    <div class="serif-h1 serif-h1-dk" style="font-size:28px">Managing a Superyacht is a full-time operation — with part-time tools.</div>
-    <div class="divider divider-dk"></div>
-    <p class="body-text body-text-dk" style="margin-bottom:20px">The superyacht industry runs on institutional memory, mobile communication threads, and outdated spreadsheets. When crew turn over, knowledge walks out the door.</p>
-    <div>
-      <div class="prob-card fade-up">
-        <div class="prob-icon" style="background:#FEF0F0">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C04040" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+<!-- ══════════════ THE PROBLEM ═══════════════════════════ -->
+<section class="section" style="background:var(--cream)">
+  <div class="split">
+    <div style="flex:1" class="inner fu">
+      <div class="pill pill-dk">THE PROBLEM</div>
+      <div class="h1 h1-dark" style="font-size:clamp(24px,3.5vw,38px)">Managing a Superyacht is a full-time operation — with part-time tools.</div>
+      <div class="div div-dk"></div>
+      <p class="body-dark" style="margin-bottom:4px">The superyacht industry runs on institutional memory, mobile communication threads, and outdated spreadsheets. When crew turn over, knowledge walks out the door.</p>
+      <div class="prob-cards">
+        <div class="prob-card fu">
+          <div class="prob-ico" style="background:#FEF0F0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C04040" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div><div class="prob-title">No single source of truth</div><div class="prob-desc">Crew docs in email, maintenance on paper, budgets in Excel, trips in WhatsApp — no connection between any of them.</div></div>
         </div>
-        <div>
-          <div class="prob-title">No single source of truth</div>
-          <div class="prob-desc">Crew docs in email, maintenance on paper, budgets in Excel, trips in WhatsApp — no connection between any of them.</div>
+        <div class="prob-card fu">
+          <div class="prob-ico" style="background:#FEF6EC"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C07020" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="0.6" fill="#C07020"/></svg></div>
+          <div><div class="prob-title">Compliance failures under pressure</div><div class="prob-desc">Expired certificates, overdue inspections, missing documentation — discovered at the worst possible moment.</div></div>
         </div>
-      </div>
-      <div class="prob-card fade-up">
-        <div class="prob-icon" style="background:#FEF6EC">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C07020" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="0.6" fill="#C07020"/></svg>
-        </div>
-        <div>
-          <div class="prob-title">Compliance failures under pressure</div>
-          <div class="prob-desc">Expired certificates, overdue inspections, missing documentation — discovered at the worst possible moment.</div>
+        <div class="prob-card fu">
+          <div class="prob-ico" style="background:#EFF6FF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          <div><div class="prob-title">Crew turnover destroys institutional knowledge</div><div class="prob-desc">Each new Chief Stew or Engineer starts from scratch. Months of operational context, gone overnight.</div></div>
         </div>
       </div>
-      <div class="prob-card fade-up">
-        <div class="prob-icon" style="background:#EFF6FF">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-        </div>
-        <div>
-          <div class="prob-title">Crew turnover destroys institutional knowledge</div>
-          <div class="prob-desc">Each new Chief Stew or Engineer starts from scratch. Months of operational context, gone overnight.</div>
-        </div>
-      </div>
+    </div>
+    <div class="split-photo-wrap">
+      <img src="Sample%202/4.jpg" alt="Engineering" style="object-position:center 35%" />
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ 05 · THE SOLUTION ═══════════════════ -->
-<section class="bg-section">
-  <img class="bg-section-img" src="Sample%202/5.jpg" alt="Vault platform" style="opacity:0.25" />
-  <div class="bg-section-overlay" style="background:rgba(13,21,13,0.82)"></div>
-  <div class="section-inner" style="position:relative;z-index:10">
-    <div class="pill fade-up">THE SOLUTION</div>
-    <div class="serif-h1 fade-up" style="font-size:32px">One Platform.<br>Every Department.<br>Total Clarity.</div>
-    <div class="divider fade-up"></div>
-    <p class="body-text fade-up" style="margin-bottom:24px">Vault consolidates every operational function of a superyacht into a single connected system — from the bridge to the galley, from crew compliance to guest preferences.</p>
-    <div class="feat-list fade-up">
-      <div class="feat-row">
-        <div class="feat-dot"></div>
-        <div>
-          <div class="feat-head">Real-time compliance tracking</div>
-          <div class="feat-sub-txt">Certificates, inspections, and crew docs monitored automatically with automated alerts.</div>
-        </div>
-      </div>
-      <div class="feat-row">
-        <div class="feat-dot"></div>
-        <div>
-          <div class="feat-head">Unified financial control</div>
-          <div class="feat-sub-txt">Budget vs actual, invoices, and expenses — across every department, every voyage.</div>
-        </div>
-      </div>
-      <div class="feat-row">
-        <div class="feat-dot"></div>
-        <div>
-          <div class="feat-head">Institutional knowledge — preserved</div>
-          <div class="feat-sub-txt">Crew change doesn't mean context loss. Every preference, procedure, and history stays in Vault.</div>
-        </div>
-      </div>
+<!-- ══════════════ THE SOLUTION ══════════════════════════ -->
+<section class="dark-s" id="platform">
+  <img class="dark-s-img" src="Sample%202/5.jpg" alt="Platform" style="opacity:0.55" />
+  <div class="dark-s-ov" style="background:rgba(13,21,13,0.62)"></div>
+  <div class="dark-s-in inner fu">
+    <div class="pill">THE SOLUTION</div>
+    <div class="h1 h1-light" style="font-size:clamp(28px,4vw,44px)">One Platform.<br>Every Department.<br>Total Clarity.</div>
+    <div class="div"></div>
+    <p class="body-light" style="margin-bottom:24px">Vault consolidates every operational function of a superyacht into a single connected system — from the bridge to the galley, from crew compliance to guest preferences.</p>
+    <div class="feat-list">
+      <div class="feat"><div class="feat-dot"></div><div><div class="feat-h">Real-time compliance tracking</div><div class="feat-s">Certificates, inspections, and crew docs monitored automatically with automated alerts.</div></div></div>
+      <div class="feat"><div class="feat-dot"></div><div><div class="feat-h">Unified financial control</div><div class="feat-s">Budget vs actual, invoices, and expenses — across every department, every voyage.</div></div></div>
+      <div class="feat"><div class="feat-dot"></div><div><div class="feat-h">Institutional knowledge — preserved</div><div class="feat-s">Crew change doesn't mean context loss. Every preference, procedure, and history stays in Vault.</div></div></div>
     </div>
-    <div class="feat-grid fade-up" style="margin-top:32px">
-      <div class="feat-item">
-        <div class="feat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="9" y="2" width="6" height="5" rx="1.5" stroke="#5A9ED4" stroke-width="1.5"/><rect x="2" y="17" width="6" height="5" rx="1.5" stroke="#5A9ED4" stroke-width="1.5"/><rect x="16" y="17" width="6" height="5" rx="1.5" stroke="#5A9ED4" stroke-width="1.5"/><path d="M12 7v4M12 11H5v2M12 11h7v2" stroke="#5A9ED4" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-        <div><div class="feat-name">Management</div><div class="feat-sub">Ops &amp; hierarchy</div></div>
-      </div>
-      <div class="feat-item">
-        <div class="feat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="8.5" cy="7" r="3" stroke="#5A9ED4" stroke-width="1.5"/><circle cx="15.5" cy="7" r="3" stroke="#5A9ED4" stroke-width="1.5"/><path d="M2 20c0-3.314 2.91-6 6.5-6" stroke="#5A9ED4" stroke-width="1.5" stroke-linecap="round"/><path d="M22 20c0-3.314-2.91-6-6.5-6s-6.5 2.686-6.5 6" stroke="#5A9ED4" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-        <div><div class="feat-name">Crew</div><div class="feat-sub">Schedules &amp; handovers</div></div>
-      </div>
-      <div class="feat-item">
-        <div class="feat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="3" y="14" width="18" height="7" rx="1.5" stroke="#5A9ED4" stroke-width="1.5"/><rect x="5" y="8" width="14" height="6" rx="1" stroke="#5A9ED4" stroke-width="1.5"/><rect x="7" y="3" width="10" height="5" rx="1" stroke="#5A9ED4" stroke-width="1.5"/></svg></div>
-        <div><div class="feat-name">Inventory</div><div class="feat-sub">Stores &amp; spares</div></div>
-      </div>
-      <div class="feat-item">
-        <div class="feat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5.5v6C4 16.5 7.5 21 12 22c4.5-1 8-5.5 8-10.5v-6L12 2z" stroke="#5A9ED4" stroke-width="1.5" stroke-linejoin="round"/><path d="M8.5 12l2.5 2.5 4.5-4.5" stroke="#5A9ED4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div><div class="feat-name">Compliance</div><div class="feat-sub">Certs &amp; audits</div></div>
-      </div>
-      <div class="feat-item">
-        <div class="feat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 5h12" stroke="#5A9ED4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="20" r="1" fill="#5A9ED4"/><circle cx="17" cy="20" r="1" fill="#5A9ED4"/></svg></div>
-        <div><div class="feat-name">Procurement</div><div class="feat-sub">Orders &amp; vendors</div></div>
-      </div>
-      <div class="feat-item">
-        <div class="feat-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="#5A9ED4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div><div class="feat-name">Maintenance</div><div class="feat-sub">Jobs &amp; defect logs</div></div>
-      </div>
+    <div class="cap-grid">
+      <div class="cap-item"><div class="cap-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="9" y="2" width="6" height="5" rx="1.5" stroke="#5A9ED4" stroke-width="1.5"/><rect x="2" y="17" width="6" height="5" rx="1.5" stroke="#5A9ED4" stroke-width="1.5"/><rect x="16" y="17" width="6" height="5" rx="1.5" stroke="#5A9ED4" stroke-width="1.5"/><path d="M12 7v4M12 11H5v2M12 11h7v2" stroke="#5A9ED4" stroke-width="1.5" stroke-linecap="round"/></svg></div><div><div class="cap-name">Management</div><div class="cap-sub">Ops &amp; hierarchy</div></div></div>
+      <div class="cap-item"><div class="cap-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="8.5" cy="7" r="3" stroke="#5A9ED4" stroke-width="1.5"/><circle cx="15.5" cy="7" r="3" stroke="#5A9ED4" stroke-width="1.5"/><path d="M2 20c0-3.314 2.91-6 6.5-6" stroke="#5A9ED4" stroke-width="1.5" stroke-linecap="round"/><path d="M22 20c0-3.314-2.91-6-6.5-6s-6.5 2.686-6.5 6" stroke="#5A9ED4" stroke-width="1.5" stroke-linecap="round"/></svg></div><div><div class="cap-name">Crew</div><div class="cap-sub">Schedules &amp; handovers</div></div></div>
+      <div class="cap-item"><div class="cap-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="14" width="18" height="7" rx="1.5" stroke="#5A9ED4" stroke-width="1.5"/><rect x="5" y="8" width="14" height="6" rx="1" stroke="#5A9ED4" stroke-width="1.5"/><rect x="7" y="3" width="10" height="5" rx="1" stroke="#5A9ED4" stroke-width="1.5"/></svg></div><div><div class="cap-name">Inventory</div><div class="cap-sub">Stores &amp; spares</div></div></div>
+      <div class="cap-item"><div class="cap-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 5.5v6C4 16.5 7.5 21 12 22c4.5-1 8-5.5 8-10.5v-6L12 2z" stroke="#5A9ED4" stroke-width="1.5" stroke-linejoin="round"/><path d="M8.5 12l2.5 2.5 4.5-4.5" stroke="#5A9ED4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="cap-name">Compliance</div><div class="cap-sub">Certs &amp; audits</div></div></div>
+      <div class="cap-item"><div class="cap-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 5h12" stroke="#5A9ED4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="20" r="1" fill="#5A9ED4"/><circle cx="17" cy="20" r="1" fill="#5A9ED4"/></svg></div><div><div class="cap-name">Procurement</div><div class="cap-sub">Orders &amp; vendors</div></div></div>
+      <div class="cap-item"><div class="cap-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" stroke="#5A9ED4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="cap-name">Maintenance</div><div class="cap-sub">Jobs &amp; defect logs</div></div></div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ 06 · THE PLATFORM ═══════════════════ -->
-<section class="bg-section">
-  <img class="bg-section-img" src="Sample%202/6.jpg" alt="Platform portals" style="opacity:0.2" />
-  <div class="bg-section-overlay" style="background:rgba(10,16,10,0.88)"></div>
-  <div class="section-inner" style="position:relative;z-index:10">
-    <div class="pill fade-up">THE PLATFORM</div>
-    <div class="serif-h1 fade-up" style="font-size:30px">11 Portals.<br>One Connected System.</div>
-    <div class="divider fade-up"></div>
-    <p class="body-text fade-up" style="margin-bottom:4px">Each portal is purpose-built for a specific department — delivering exactly what that role needs, nothing it doesn't.</p>
-    <div class="portal-grid fade-up">
-      <a class="portal-card" href="Portals/dashboard_mockup.html" target="_blank">
-        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-        <div class="portal-num">01</div>
-        <div class="portal-name">Atlas Dashboard</div>
-        <div class="portal-desc">Fleet status &amp; overview at a glance</div>
-      </a>
-      <a class="portal-card" href="Portals/02_trip_hub.html" target="_blank">
-        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-        <div class="portal-num">02</div>
-        <div class="portal-name">Trip Hub</div>
-        <div class="portal-desc">Voyage planning &amp; itineraries</div>
-      </a>
-      <a class="portal-card" href="Portals/03_bridge.html" target="_blank">
-        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-        <div class="portal-num">03</div>
-        <div class="portal-name">The Bridge</div>
-        <div class="portal-desc">Navigation &amp; watch management</div>
-      </a>
-      <a class="portal-card" href="Portals/04_purser.html" target="_blank">
-        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-        <div class="portal-num">04</div>
-        <div class="portal-name">Purser</div>
-        <div class="portal-desc">Finance, budgets &amp; expenses</div>
-      </a>
-      <a class="portal-card" href="Portals/05_engineering.html" target="_blank">
-        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-        <div class="portal-num">05</div>
-        <div class="portal-name">Engineering</div>
-        <div class="portal-desc">Technical ops &amp; maintenance</div>
-      </a>
-      <a class="portal-card" href="Portals/06_interior.html" target="_blank">
-        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-        <div class="portal-num">06</div>
-        <div class="portal-name">Interior</div>
-        <div class="portal-desc">Hospitality &amp; guest experience</div>
-      </a>
-      <a class="portal-card" href="Portals/07_deck.html" target="_blank">
-        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-        <div class="portal-num">07</div>
-        <div class="portal-name">Deck Operations</div>
-        <div class="portal-desc">Safety, tenders &amp; deck tasks</div>
-      </a>
-      <a class="portal-card" href="Portals/08_galley.html" target="_blank">
-        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-        <div class="portal-num">08</div>
-        <div class="portal-name">Galley</div>
-        <div class="portal-desc">Provisioning &amp; menu planning</div>
-      </a>
-      <a class="portal-card" href="Portals/09_projects.html" target="_blank">
-        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-        <div class="portal-num">09</div>
-        <div class="portal-name">Projects</div>
-        <div class="portal-desc">Refit management &amp; contractors</div>
-      </a>
-      <a class="portal-card" href="Portals/10_crew.html" target="_blank">
-        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-        <div class="portal-num">10</div>
-        <div class="portal-name">Crew</div>
-        <div class="portal-desc">Rosters, certs &amp; compliance</div>
-      </a>
-      <a class="portal-card" href="Portals/11_settings.html" target="_blank" style="grid-column:1/-1;background:rgba(135,188,237,0.06);border-color:rgba(135,188,237,0.2)">
-        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-        <div class="portal-num">11</div>
-        <div class="portal-name">Settings &amp; Admin</div>
-        <div class="portal-desc">Users, permissions, vessel config &amp; integrations</div>
-      </a>
+<!-- ══════════════ PORTALS ════════════════════════════════ -->
+<div id="portals">
+
+<!-- DARK 1: Trip Hub + Crew -->
+<div class="portal-s dark-1 fu">
+  <div class="portal-s-wrap">
+    <div class="portal-hd">
+      <div class="portal-eyebrow">Voyage &amp; Crew</div>
+      <div class="portal-title">Plan Every Passage. Know Your People.</div>
+      <div class="portal-desc">Full itinerary management and voyage planning alongside a complete crew roster, certifications, and watch schedules.</div>
+    </div>
+    <div class="portal-pair">
+      <div class="portal-img-wrap"><img src="portal-images/11_Settings_Admin.png" alt="Trip Hub" loading="lazy" /><div class="portal-img-label">Trip Hub</div></div>
+      <div class="portal-img-wrap"><img src="portal-images/03_The_Bridge.png" alt="Crew" loading="lazy" /><div class="portal-img-label">Crew</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHT 1: Dashboard + Bridge -->
+<div class="portal-s light-1 fu">
+  <div class="portal-s-wrap">
+    <div class="portal-hd">
+      <div class="portal-eyebrow">Command &amp; Navigation</div>
+      <div class="portal-title">Everything at a Glance.</div>
+      <div class="portal-desc">Your entire vessel status in one dashboard — compliance, alerts, and crew — alongside live navigation data, AIS feed, and watch schedules.</div>
+    </div>
+    <div class="portal-pair">
+      <div class="portal-img-wrap"><img src="portal-images/01_Atlas_Dashboard.png" alt="Dashboard" loading="lazy" /><div class="portal-img-label">Dashboard</div></div>
+      <div class="portal-img-wrap"><img src="portal-images/10_Crew.png" alt="Bridge" loading="lazy" /><div class="portal-img-label">Bridge</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHT 2: Projects + Engineering -->
+<div class="portal-s light-2 fu">
+  <div class="portal-s-wrap">
+    <div class="portal-hd">
+      <div class="portal-eyebrow">Technical &amp; Projects</div>
+      <div class="portal-title">Stay Ahead of Every Job.</div>
+      <div class="portal-desc">Track refits, contractor tasks, and deadlines in Projects. Monitor engines, fuel, systems, and maintenance schedules in Engineering.</div>
+    </div>
+    <div class="portal-pair">
+      <div class="portal-img-wrap"><img src="portal-images/04_Purser.png" alt="Projects" loading="lazy" /><div class="portal-img-label">Projects</div></div>
+      <div class="portal-img-wrap"><img src="portal-images/08_Galley.png" alt="Engineering" loading="lazy" /><div class="portal-img-label">Engineering</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DARK 2: Galley + Interior -->
+<div class="portal-s dark-1 fu">
+  <div class="portal-s-wrap">
+    <div class="portal-hd">
+      <div class="portal-eyebrow">Hospitality</div>
+      <div class="portal-title">Run a Flawless Charter Experience.</div>
+      <div class="portal-desc">Menu planning, dietary flags, and provisioning in Galley. Guest preferences, cabin readiness, and turnover schedules in Interior.</div>
+    </div>
+    <div class="portal-pair">
+      <div class="portal-img-wrap"><img src="portal-images/05_Engineering.png" alt="Galley" loading="lazy" /><div class="portal-img-label">Galley</div></div>
+      <div class="portal-img-wrap"><img src="portal-images/07_Deck_Operations.png" alt="Interior" loading="lazy" /><div class="portal-img-label">Interior</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHT 3: Deck + Settings -->
+<div class="portal-s light-1 fu">
+  <div class="portal-s-wrap">
+    <div class="portal-hd">
+      <div class="portal-eyebrow">Deck &amp; Administration</div>
+      <div class="portal-title">Operations &amp; Configuration.</div>
+      <div class="portal-desc">Tender inventory, safety equipment, and daily deck tasks — alongside vessel configuration, user permissions, and integrations.</div>
+    </div>
+    <div class="portal-pair">
+      <div class="portal-img-wrap"><img src="portal-images/06_Interior.png" alt="Deck" loading="lazy" /><div class="portal-img-label">Deck</div></div>
+      <div class="portal-img-wrap"><img src="portal-images/02_Trip_Hub.png" alt="Settings" loading="lazy" /><div class="portal-img-label">Settings</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DARK 3: Purser (solo) -->
+<div class="portal-s dark-1 fu">
+  <div class="portal-s-wrap">
+    <div class="portal-hd">
+      <div class="portal-eyebrow">Finance</div>
+      <div class="portal-title">Total Budget Control.</div>
+      <div class="portal-desc">Monthly budgets, expense tracking, pending invoices, and financial reporting — all in one dedicated portal for the Purser.</div>
+    </div>
+    <div class="portal-solo">
+      <div class="portal-img-wrap"><img src="portal-images/09_Projects.png" alt="Purser" loading="lazy" /><div class="portal-img-label">Purser</div></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /portals -->
+
+<!-- ══════════════ WHO IT'S FOR ══════════════════════════ -->
+<section class="dark-s" id="who">
+  <img class="dark-s-img" src="Sample%202/12.jpg" alt="Yacht crew" style="opacity:0.60" />
+  <div class="dark-s-ov" style="background:linear-gradient(180deg,rgba(13,21,13,0.48) 0%,rgba(13,21,13,0.72) 100%)"></div>
+  <div class="dark-s-in inner fu" style="text-align:center">
+    <div class="pill">WHO IT'S FOR</div>
+    <div class="h1 h1-light" style="font-size:clamp(26px,4vw,42px);margin-bottom:10px">Designed for everyone<br>who makes a yacht run.</div>
+    <p class="body-light" style="max-width:480px;margin:0 auto 28px">Whether you're managing a single vessel or an entire fleet, Vault adapts to how you work.</p>
+    <div class="aud-grid" style="text-align:left">
+      <div class="aud-card fu"><div class="aud-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#87BCED" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a4.5 9 0 0 1 0 18 4.5 9 0 0 1 0-18"/><line x1="3" y1="12" x2="21" y2="12"/></svg></div><div class="aud-t">Captains &amp; Officers</div><div class="aud-d">Complete operational command. Compliance, watch schedules, safety, and crew — all in one dashboard. Start every morning briefed, not buried.</div></div>
+      <div class="aud-card fu"><div class="aud-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#87BCED" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="aud-t">Department Heads</div><div class="aud-d">Each portal is tailored for the Chief Stew, Engineer, Bosun, Chef, or Purser. No irrelevant noise — just what matters to your role.</div></div>
+      <div class="aud-card fu"><div class="aud-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#87BCED" stroke-width="1.8" stroke-linecap="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><line x1="9" y1="12" x2="15" y2="12"/></svg></div><div class="aud-t">Management Companies</div><div class="aud-d">Fleet-wide visibility. Compliance oversight, budget reporting, and crew data across every vessel — with role-based access for owners and managers.</div></div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════ 07 · WHO IT'S FOR ═══════════════════ -->
-<section class="bg-section">
-  <img class="bg-section-img" src="Sample%202/12.jpg" alt="Yacht crew" style="opacity:0.3" />
-  <div class="bg-section-overlay" style="background:linear-gradient(180deg,rgba(13,21,13,0.75) 0%,rgba(13,21,13,0.9) 100%)"></div>
-  <div class="section-inner" style="position:relative;z-index:10;text-align:center">
-    <div class="pill fade-up" style="margin-bottom:16px">WHO IT'S FOR</div>
-    <div class="serif-h1 fade-up" style="font-size:30px;margin-bottom:10px">Designed for everyone<br>who makes a yacht run.</div>
-    <p class="body-text fade-up" style="margin-bottom:28px;max-width:340px;margin-left:auto;margin-right:auto">Whether you're managing a single vessel or an entire fleet, Vault adapts to how you work.</p>
-    <div style="text-align:left">
-      <div class="aud-card fade-up">
-        <div class="aud-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#87BCED" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a4.5 9 0 0 1 0 18 4.5 9 0 0 1 0-18"/><line x1="3" y1="12" x2="21" y2="12"/></svg>
-        </div>
-        <div class="aud-title">Captains &amp; Officers</div>
-        <div class="aud-desc">Complete operational command. Compliance, watch schedules, safety, and crew — all in one dashboard. Start every morning briefed, not buried.</div>
-      </div>
-      <div class="aud-card fade-up">
-        <div class="aud-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#87BCED" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </div>
-        <div class="aud-title">Department Heads</div>
-        <div class="aud-desc">Each portal is tailored for the Chief Stew, Engineer, Bosun, Chef, or Purser. No irrelevant noise — just what matters to your role.</div>
-      </div>
-      <div class="aud-card fade-up">
-        <div class="aud-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#87BCED" stroke-width="1.8" stroke-linecap="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
-        </div>
-        <div class="aud-title">Management Companies</div>
-        <div class="aud-desc">Fleet-wide visibility. Compliance oversight, budget reporting, and crew data across every vessel — with role-based access for owners and managers.</div>
-      </div>
-    </div>
+<!-- ══════════════ CONTACT ════════════════════════════════ -->
+<section class="dark-s" id="contact">
+  <div style="position:relative;overflow:hidden;aspect-ratio:21/6;min-height:180px">
+    <img src="Sample%202/13.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center" alt="" />
+    <div style="position:absolute;inset:0;background:rgba(13,21,13,0.14)"></div>
   </div>
-</section>
-
-<!-- ═══════════════ 08 · CONTACT ════════════════════════ -->
-<section style="background:var(--midnight)">
-  <div class="photo-block fade-up" style="aspect-ratio:4/3">
-    <img src="Sample%202/13.jpg" alt="Superyacht" style="object-position:center" />
-    <div style="position:absolute;inset:0;background:rgba(13,21,13,0.15)"></div>
-  </div>
-  <div class="section-inner fade-up">
-    <div class="serif-h1 fade-up" style="font-size:32px;line-height:1.1;margin-bottom:16px">Ready to run your vessel the way it deserves?</div>
-    <p class="body-text fade-up" style="margin-bottom:6px">
-      Vault is currently in early access. Reach out directly and we'll be in touch personally.
-    </p>
-    <div style="font-size:11px;color:var(--sky);letter-spacing:0.08em;font-weight:600;margin-bottom:28px" class="fade-up">
-      Built by Crew, for Crew — since day one.
-    </div>
-    <div style="display:flex;flex-direction:column;gap:12px" class="fade-up">
+  <div class="dark-s-in inner fu" style="background:var(--midnight)">
+    <div class="h1 h1-light" style="font-size:clamp(26px,4vw,44px);line-height:1.1;margin-bottom:16px">Ready to run your vessel<br>the way it deserves?</div>
+    <p class="body-light" style="margin-bottom:6px">Vault is currently in early access. Reach out directly and we'll be in touch personally.</p>
+    <div style="font-size:11px;color:var(--sky);letter-spacing:0.08em;font-weight:600;margin-bottom:28px">Built by Crew, for Crew — since day one.</div>
+    <div class="cta-pair">
       <a class="btn-ghost" href="https://instagram.com/veslvault" target="_blank" rel="noopener noreferrer">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-          <rect x="2" y="2" width="20" height="20" rx="6" stroke="#87BCED" stroke-width="1.8"/>
-          <circle cx="12" cy="12" r="4.5" stroke="#87BCED" stroke-width="1.8"/>
-          <circle cx="17.5" cy="6.5" r="1" fill="#87BCED"/>
-        </svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="6" stroke="#87BCED" stroke-width="1.8"/><circle cx="12" cy="12" r="4.5" stroke="#87BCED" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1" fill="#87BCED"/></svg>
         Follow us on Instagram
       </a>
       <a class="btn-ghost" href="mailto:info@veslvault.com?subject=Vault%20Early%20Access%20Request">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-          <rect x="2" y="4" width="20" height="16" rx="3" stroke="#87BCED" stroke-width="1.8"/>
-          <path d="M2 8l10 6 10-6" stroke="#87BCED" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="3" stroke="#87BCED" stroke-width="1.8"/><path d="M2 8l10 6 10-6" stroke="#87BCED" stroke-width="1.8" stroke-linecap="round"/></svg>
         info@veslvault.com
       </a>
     </div>
-    <div style="font-size:10px;color:rgba(255,255,255,0.22);margin-top:14px" class="fade-up">
-      We'll respond personally within 24 hours.
-    </div>
-    <div class="contact-stats fade-up">
-      <div class="contact-stat">
-        <div class="cstat-num">11+</div>
-        <div class="cstat-lbl">PORTALS</div>
-      </div>
-      <div class="contact-stat">
-        <div class="cstat-num">1</div>
-        <div class="cstat-lbl">PLATFORM</div>
-      </div>
-      <div class="contact-stat">
-        <div class="cstat-num">∞</div>
-        <div class="cstat-lbl">POTENTIAL</div>
-      </div>
+    <div style="font-size:10px;color:rgba(255,255,255,0.22);margin-top:14px">We'll respond personally within 24 hours.</div>
+    <div class="c-stats">
+      <div class="c-stat"><div class="c-n">11+</div><div class="c-l">PORTALS</div></div>
+      <div class="c-stat"><div class="c-n">1</div><div class="c-l">PLATFORM</div></div>
+      <div class="c-stat"><div class="c-n">∞</div><div class="c-l">POTENTIAL</div></div>
     </div>
   </div>
 </section>
 
-<!-- ── FOOTER ───────────────────────────────────────────── -->
-<footer class="site-footer">
+<!-- ── FOOTER ────────────────────────────────────────────── -->
+<footer class="footer">
   <div class="footer-brand">
     <svg viewBox="0 0 100 104" width="12" height="13" fill="none">
-      <defs><mask id="vmF"><rect width="100" height="104" fill="black"/><path d="M8,8 L92,8 L50,96 Z" fill="white"/><rect x="8" y="8" width="84" height="9" fill="black"/><rect x="46" y="8" width="8" height="88" fill="black"/></mask></defs>
-      <rect width="100" height="104" fill="rgba(255,255,255,0.3)" mask="url(#vmF)"/>
+      <defs><mask id="fm"><rect width="100" height="104" fill="black"/><path d="M8,8 L92,8 L50,96 Z" fill="white"/><rect x="8" y="8" width="84" height="9" fill="black"/><rect x="46" y="8" width="8" height="88" fill="black"/></mask></defs>
+      <rect width="100" height="104" fill="#8FA08E" mask="url(#fm)"/>
     </svg>
     VAULT
   </div>
-  <div class="footer-tagline">Built by crew, for crew</div>
+  <div class="footer-tag">Built by crew, for crew</div>
   <div class="footer-meta">&copy; 2026 Vault &middot; veslvault.com</div>
 </footer>
 
 <script>
-  // ── Nav theme change on scroll ───────────────────────
-  const nav = document.getElementById('topnav');
-  const hero = document.getElementById('hero');
-  function updateNav() {
-    const heroBottom = hero.getBoundingClientRect().bottom;
-    if (heroBottom < 60) {
-      nav.classList.add('nav-light');
-    } else {
-      nav.classList.remove('nav-light');
-    }
-  }
-  window.addEventListener('scroll', updateNav, { passive: true });
-
-  // ── Fade-up on scroll ────────────────────────────────
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fu').forEach(el => io.observe(el));
 </script>
 
 </body>
