@@ -338,6 +338,15 @@
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(135,188,237,0.12);
       border-radius: 12px; padding: 16px 14px;
+      text-decoration: none;
+      display: block;
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.18s, border-color 0.18s;
+    }
+    .portal-card:active {
+      background: rgba(135,188,237,0.08);
+      border-color: rgba(135,188,237,0.3);
     }
     .portal-num {
       font-size: 8px; font-weight: 700;
@@ -351,6 +360,10 @@
     .portal-desc {
       font-size: 11px; color: rgba(255,255,255,0.38);
       line-height: 1.5;
+    }
+    .portal-arrow {
+      position: absolute; top: 14px; right: 14px;
+      color: rgba(135,188,237,0.4);
     }
 
     /* ── AUDIENCE CARDS ─────────────────────────────────── */
@@ -644,61 +657,72 @@
     <div class="divider fade-up"></div>
     <p class="body-text fade-up" style="margin-bottom:4px">Each portal is purpose-built for a specific department — delivering exactly what that role needs, nothing it doesn't.</p>
     <div class="portal-grid fade-up">
-      <div class="portal-card">
+      <a class="portal-card" href="Portals/dashboard_mockup.html" target="_blank">
+        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="portal-num">01</div>
         <div class="portal-name">Atlas Dashboard</div>
-        <div class="portal-desc">Fleet status & overview at a glance</div>
-      </div>
-      <div class="portal-card">
+        <div class="portal-desc">Fleet status &amp; overview at a glance</div>
+      </a>
+      <a class="portal-card" href="Portals/02_trip_hub.html" target="_blank">
+        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="portal-num">02</div>
         <div class="portal-name">Trip Hub</div>
-        <div class="portal-desc">Voyage planning & itineraries</div>
-      </div>
-      <div class="portal-card">
+        <div class="portal-desc">Voyage planning &amp; itineraries</div>
+      </a>
+      <a class="portal-card" href="Portals/03_bridge.html" target="_blank">
+        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="portal-num">03</div>
         <div class="portal-name">The Bridge</div>
-        <div class="portal-desc">Navigation & watch management</div>
-      </div>
-      <div class="portal-card">
+        <div class="portal-desc">Navigation &amp; watch management</div>
+      </a>
+      <a class="portal-card" href="Portals/04_purser.html" target="_blank">
+        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="portal-num">04</div>
         <div class="portal-name">Purser</div>
-        <div class="portal-desc">Finance, budgets & expenses</div>
-      </div>
-      <div class="portal-card">
+        <div class="portal-desc">Finance, budgets &amp; expenses</div>
+      </a>
+      <a class="portal-card" href="Portals/05_engineering.html" target="_blank">
+        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="portal-num">05</div>
         <div class="portal-name">Engineering</div>
-        <div class="portal-desc">Technical ops & maintenance</div>
-      </div>
-      <div class="portal-card">
+        <div class="portal-desc">Technical ops &amp; maintenance</div>
+      </a>
+      <a class="portal-card" href="Portals/06_interior.html" target="_blank">
+        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="portal-num">06</div>
         <div class="portal-name">Interior</div>
-        <div class="portal-desc">Hospitality & guest experience</div>
-      </div>
-      <div class="portal-card">
+        <div class="portal-desc">Hospitality &amp; guest experience</div>
+      </a>
+      <a class="portal-card" href="Portals/07_deck.html" target="_blank">
+        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="portal-num">07</div>
         <div class="portal-name">Deck Operations</div>
-        <div class="portal-desc">Safety, tenders & deck tasks</div>
-      </div>
-      <div class="portal-card">
+        <div class="portal-desc">Safety, tenders &amp; deck tasks</div>
+      </a>
+      <a class="portal-card" href="Portals/08_galley.html" target="_blank">
+        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="portal-num">08</div>
         <div class="portal-name">Galley</div>
-        <div class="portal-desc">Provisioning & menu planning</div>
-      </div>
-      <div class="portal-card">
+        <div class="portal-desc">Provisioning &amp; menu planning</div>
+      </a>
+      <a class="portal-card" href="Portals/09_projects.html" target="_blank">
+        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="portal-num">09</div>
         <div class="portal-name">Projects</div>
-        <div class="portal-desc">Refit management & contractors</div>
-      </div>
-      <div class="portal-card">
+        <div class="portal-desc">Refit management &amp; contractors</div>
+      </a>
+      <a class="portal-card" href="Portals/10_crew.html" target="_blank">
+        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="portal-num">10</div>
         <div class="portal-name">Crew</div>
-        <div class="portal-desc">Rosters, certs & compliance</div>
-      </div>
-      <div class="portal-card" style="grid-column:1/-1;background:rgba(135,188,237,0.06);border-color:rgba(135,188,237,0.2)">
+        <div class="portal-desc">Rosters, certs &amp; compliance</div>
+      </a>
+      <a class="portal-card" href="Portals/11_settings.html" target="_blank" style="grid-column:1/-1;background:rgba(135,188,237,0.06);border-color:rgba(135,188,237,0.2)">
+        <div class="portal-arrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></div>
         <div class="portal-num">11</div>
         <div class="portal-name">Settings &amp; Admin</div>
-        <div class="portal-desc">Users, permissions, vessel config & integrations</div>
-      </div>
+        <div class="portal-desc">Users, permissions, vessel config &amp; integrations</div>
+      </a>
     </div>
   </div>
 </section>
