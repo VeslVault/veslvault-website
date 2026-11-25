@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VAULT · Vessel Management For Superyachts</title>
+<meta name="description" content="Vessel management for superyachts. Built by crew, for crew. Every department, one VAULT, on iPhone, iPad and the web.">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<script>
+/* Anything that is not a phone goes to the desktop site. */
+(function(){var phone=/iPhone|iPod|Android.+Mobile|Windows Phone/i.test(navigator.userAgent)||window.matchMedia('(max-width: 760px) and (pointer: coarse)').matches;
+if(!phone&&!/[?&]view=mobile/.test(location.search))location.replace('../desktop/'+location.hash);})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=block">
+<style>
+:root{
+  --bg:#FFFFFF; --bg2:#F5F5F7; --fg:#1D1D1F; --muted:#6E6E73; --hair:rgba(0,0,0,.08); --sky:#87BCED; --line:#E5E5EA;
+  --card:#FFFFFF; --btn-bg:#000000; --btn-fg:#FFFFFF; --btn2-bg:#F5F5F7; --btn2-fg:#1D1D1F; --dim:#D2D2D7;
+  --rim:linear-gradient(145deg,#55555a 0%,#1c1c1e 30%,#3a3a3d 62%,#111112 100%); --btnm:#2a2a2c; --ring:rgba(255,255,255,.10);
+  --drop:drop-shadow(22px 30px 22px rgba(0,0,0,.15)) drop-shadow(60px 80px 50px rgba(0,0,0,.09));
+  --ui:"Inter",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif; color-scheme:light;
+  --nav:64px; --S:calc(100vh - var(--nav)); --spring:cubic-bezier(.2,.8,.2,1);
+}
+:root[data-theme="dark"]{
+  --bg:#000000; --bg2:#161617; --fg:#F5F5F7; --muted:#86868B; --hair:rgba(255,255,255,.1); --line:#2C2C2E; --card:#1C1C1E;
+  --btn-bg:#FFFFFF; --btn-fg:#000000; --btn2-bg:#1C1C1E; --btn2-fg:#F5F5F7; --dim:#333336;
+  --rim:linear-gradient(145deg,#8a8a8f 0%,#3a3a3c 30%,#6e6e73 62%,#2c2c2e 100%); --btnm:#55555a; --ring:rgba(255,255,255,.16);
+  --drop:drop-shadow(0 30px 50px rgba(0,0,0,.7)); color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--ui);-webkit-font-smoothing:antialiased;transition:background .4s,color .4s;overflow-x:hidden}
+img{display:block;max-width:100%}
+.wrap{max-width:1260px;margin:0 auto;padding:0 32px}
+.narrow{max-width:878px;width:100%;margin:0 auto;padding:0 32px}
+.wide{max-width:1078px;width:100%;margin:0 auto;padding:0 32px}
+.center{text-align:center}
+
+/* scenes: one screen each; pins hold one screen while you scroll through --n screens */
+.scene{height:var(--S);display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.pin{height:calc(var(--S) * var(--n,2));position:relative}
+.stage{position:sticky;top:var(--nav);height:var(--S);display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden}
+
+/* type: Inter 600 throughout, Showu scale */
+h1,h2,h3,h4,h5{margin:0;font-weight:600;text-wrap:balance}
+h1{font-size:clamp(46px,5.6vw,80px);line-height:1.08;letter-spacing:-.06em}
+h1 .v{letter-spacing:.04em;font-weight:700;margin-right:-.04em}
+h2{font-size:clamp(34px,3.9vw,56px);line-height:1.15;letter-spacing:-.04em}
+h3{font-size:clamp(20px,2vw,28px);line-height:1.22;letter-spacing:-.03em}
+.grey{color:var(--muted)}
+.lede{font-size:clamp(17px,1.5vw,21px);line-height:1.35;letter-spacing:-.03em;color:var(--muted);font-weight:600;max-width:40ch;margin:12px auto 0}
+.grey20{font-size:21px;line-height:1.3;letter-spacing:-.03em;color:var(--muted);font-weight:600;max-width:30ch;margin:16px 0 0}
+.eyebrow{font-size:17px;font-weight:600;letter-spacing:-.03em;color:var(--muted)}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:20;height:var(--nav);background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px)}
+.navi{display:flex;align-items:center;justify-content:space-between;height:100%}
+.brand{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;font-weight:700;letter-spacing:.21em;font-size:15px}
+.mark{width:24px;height:24px;display:block}.mark svg{width:100%;height:100%}
+.navr{display:flex;gap:10px;align-items:center}
+.tog{width:36px;height:36px;border-radius:50%;border:0;background:var(--btn2-bg);color:var(--fg);display:grid;place-items:center;cursor:pointer}
+.tog svg{width:18px;height:18px}
+.btn{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 22px;border-radius:12px;border:0;cursor:pointer;background:var(--btn-bg);color:var(--btn-fg);font:600 15px var(--ui);letter-spacing:-.03em;text-decoration:none;transition:transform .15s,opacity .2s}
+.btn:hover{opacity:.86}.btn:active{transform:scale(.97)}
+.btn.small{height:38px;padding:0 16px;font-size:14px;border-radius:10px}
+.btn.ghost{background:var(--btn2-bg);color:var(--muted)}
+.btn:focus-visible,.tog:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+.cta.left{justify-content:flex-start}
+
+/* devices: iPhone 17 Pro, black titanium; iPad Pro, space black. Sized by height so the whole device always fits. */
+.phone{--hs:calc(var(--h,560px) / 1.0478);--w:calc(var(--hs) * .45995);--r:calc(var(--w) * .017);--z:calc(var(--w) * .04);--sr:calc(var(--w) * .137);
+  position:relative;flex-shrink:0;box-sizing:content-box;width:calc(var(--w) + 2 * var(--z));height:calc(var(--hs) + 2 * var(--z));padding:var(--r);border-radius:calc(var(--sr) + var(--z) + var(--r));background:var(--rim);filter:var(--drop)}
+.phone .glass{width:100%;height:100%;box-sizing:border-box;background:#000;border-radius:calc(var(--sr) + var(--z));padding:var(--z);position:relative;overflow:hidden;box-shadow:inset 0 0 0 1px var(--ring)}
+.phone img{width:100%;height:100%;object-fit:cover;border-radius:var(--sr);transition:opacity .45s}
+.phone .glass::after{content:"";position:absolute;top:calc(var(--z) + var(--hs) * .013);left:50%;width:calc(var(--w) * .31);height:calc(var(--hs) * .042);transform:translateX(-50%);background:#000;border-radius:999px;z-index:2}
+.fin-black{--rim:linear-gradient(145deg,#5b5b5b 0%,#141414 30%,#323232 62%,#0a0a0a 100%);--btnm:#2a2a2a}
+.fin-silver{--rim:linear-gradient(145deg,#ececec 0%,#a8a8a7 30%,#d6d6d5 62%,#7e7e7c 100%);--btnm:#b4b4b3}
+.fin-glacier{--rim:linear-gradient(145deg,#dbe2ec 0%,#8799af 30%,#bcc8d8 62%,#5a6d88 100%);--btnm:#8a9bb3}
+.fin-burgundy{--rim:linear-gradient(145deg,#936b74 0%,#3a1a20 30%,#6a434b 62%,#1a080c 100%);--btnm:#4a2a30}
+.fin-padsilver{--rim:linear-gradient(145deg,#e2e3e4 0%,#9c9d9f 30%,#cbcccd 62%,#8a8b8d 100%);--btnm:#a8a9ab}
+.fin-spacegray{--rim:linear-gradient(145deg,#8c878b 0%,#3c383d 30%,#5c585c 62%,#2d2c2d 100%);--btnm:#3c383d}
+.phone .b{position:absolute;width:calc(var(--w) * .012);background:var(--btnm);border-radius:1px}
+.phone .b.l1{left:calc(var(--w) * -.008);top:17.5%;height:3.2%}.phone .b.l2{left:calc(var(--w) * -.008);top:23.5%;height:6%}.phone .b.l3{left:calc(var(--w) * -.008);top:31%;height:6%}
+.phone .b.r1{right:calc(var(--w) * -.008);top:25.5%;height:9.5%}
+.glass img.sw{position:absolute;left:var(--z);top:var(--z);width:calc(100% - 2 * var(--z));height:calc(100% - 2 * var(--z));opacity:0}
+.glass img.sw.on{opacity:1}
+.ipad{--hs:calc(var(--ih,500px) / 1.0667);--w:calc(var(--hs) * 1.334);--r:calc(var(--w) * .004);--z:calc(var(--w) * .021);--sr:calc(var(--w) * .016);
+  position:relative;flex-shrink:0;box-sizing:content-box;width:calc(var(--w) + 2 * var(--z));height:calc(var(--hs) + 2 * var(--z));padding:var(--r);border-radius:calc(var(--sr) + var(--z) + var(--r));background:var(--rim);filter:var(--drop)}
+.ipad .glass{width:100%;height:100%;box-sizing:border-box;background:#000;border-radius:calc(var(--sr) + var(--z));padding:var(--z);position:relative;overflow:hidden;box-shadow:inset 0 0 0 1px var(--ring)}
+.ipad img{width:100%;height:100%;object-fit:cover;border-radius:var(--sr);transition:opacity .5s}
+.ipad .glass::after{content:"";position:absolute;top:calc(var(--z) * .5);left:50%;width:calc(var(--z) * .35);aspect-ratio:1;transform:translate(-50%,-50%);background:#1c1c1e;border-radius:50%;box-shadow:inset 0 0 0 .5px rgba(255,255,255,.18)}
+.ipad .b{position:absolute;height:.4%;background:var(--btnm);border-radius:1px;top:-.25%}
+.ipad .b.t1{right:5%;width:3.2%}.ipad .b.t2{right:9.5%;width:2.2%}
+
+/* device sizes per scene */
+.p-main{--h:min(calc(var(--S) - 250px),620px)}
+.p-pair{--h:min(calc(var(--S) - 330px),520px)}
+.p-mid{--h:min(calc(var(--S) - 330px),520px)}
+.p-ring{--h:min(calc(var(--S) - 210px),600px)}
+.p-fan{--h:min(calc(var(--S) - 170px),620px)}
+.p-close{--h:min(calc(var(--S) - 230px),560px)}
+.padw{--ih:min(calc(var(--S) - 300px),calc((min(100vw,1180px) - 64px) * .75),600px);margin-top:24px}
+
+.row{display:grid;grid-template-columns:auto 1fr;gap:clamp(36px,5vw,72px);align-items:center;margin-top:clamp(20px,4vh,44px)}
+
+/* 1 hero */
+.hero{justify-content:flex-start;padding-top:clamp(22px,4vh,44px);padding-bottom:clamp(24px,4vh,44px)}
+.appicon{width:72px;height:72px;margin:0 auto 22px;background:none;color:var(--fg);display:grid;place-items:center}
+.appicon svg{width:56px;height:56px}
+.fan{--H:min(calc(var(--S) - 400px),calc((100vw - 220px) / 2.95),620px);flex:1;min-height:0;display:flex;justify-content:center;align-items:center;gap:clamp(16px,2.3vw,36px);margin-top:clamp(18px,3.5vh,36px)}
+.fan .phone{--h:var(--H)}
+.fan .f1,.fan .f2{--h:calc(var(--H) * .92)}
+.fan .f3,.fan .f4{--h:calc(var(--H) * .83)}
+.fan .f5,.fan .f6{--h:calc(var(--H) * .74)}
+.fan .f0{z-index:3}
+.fan .f{transform:translate3d(calc(var(--dir) * var(--q,0) * 18%),calc(var(--q,0) * var(--dir) * var(--dir) * 6%),0)}
+
+/* 2 statement */
+.hl{font-size:clamp(32px,3.9vw,56px);line-height:1.15;letter-spacing:-.04em;font-weight:600;margin:0 auto;max-width:20ch}
+.hl .w{color:var(--dim);transition:color .3s}
+.hl .w.on{color:var(--fg)}
+.kicker{font-size:clamp(19px,1.9vw,26px);font-weight:600;letter-spacing:-.03em;color:var(--muted);margin:28px auto 0;opacity:calc(var(--p,0) * 3 - 1.6)}
+#statement .cta{opacity:calc(var(--p,0) * 3 - 1.8)}
+
+/* 3 stats */
+.dv{display:flex;justify-content:center}
+.stats{display:flex;flex-direction:column;gap:clamp(18px,3.4vh,34px)}
+.stats span{display:block;font-size:21px;font-weight:600;letter-spacing:-.03em;color:var(--fg)}
+.stats b{display:block;font-size:clamp(26px,2.4vw,34px);font-weight:600;letter-spacing:-.03em;color:var(--muted);margin-top:4px}
+.note{font-size:17px;font-weight:600;letter-spacing:-.03em;color:var(--muted);line-height:1.4;max-width:30ch;margin:6px 0 0}
+
+/* 4 features */
+.fcol h3{max-width:20ch}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,4vh,40px) 28px;margin-top:clamp(34px,7vh,80px)}
+.fi svg{color:var(--fg)}
+.fi p{margin:10px 0 0;font-size:17px;font-weight:600;letter-spacing:-.03em;line-height:1.25;max-width:17ch}
+
+/* 5 scatter */
+.sch{margin-bottom:clamp(10px,2vh,24px)}
+.cloud{position:relative;display:flex;justify-content:center;align-items:center;--e:0}
+.cloud .phone{z-index:2}
+.tile{position:absolute;left:50%;top:50%;z-index:1;display:flex;align-items:center;gap:10px;padding:10px 12px 10px 10px;background:var(--card);border-radius:16px;box-shadow:0 0 0 1px var(--hair),0 18px 40px -18px rgba(0,0,0,.28);white-space:nowrap;
+  --t:clamp(0,calc(var(--e) * 1.4 - var(--k) * .05),1);
+  transform:translate(-50%,-50%) translate(calc(var(--x) * 1px * var(--t) * var(--sx,1)),calc(var(--y) * 1px * var(--t) * var(--sy,1))) scale(calc(.5 + .5 * var(--t)));opacity:var(--t)}
+.tile:nth-child(7),.tile:nth-child(8){z-index:3}
+.sg{display:block;flex-shrink:0}
+.badge{font-size:10.5px;font-weight:700;letter-spacing:.03em;color:#fff;padding:5px 9px;border-radius:999px}
+.tt{display:flex;flex-direction:column}
+.tt b{font-size:14px;font-weight:600;letter-spacing:-.02em}
+.tt span{font-size:12px;color:var(--muted);font-weight:500}
+.pill{font-size:11px;font-weight:600;padding:4px 8px;border-radius:999px;color:var(--muted);background:var(--bg2)}
+.hl2{font-size:clamp(22px,2.3vw,32px);line-height:1.22;letter-spacing:-.03em;font-weight:600;color:var(--muted);max-width:26ch;margin:clamp(18px,3.5vh,34px) auto 0}
+.hl2 b{color:var(--fg);font-weight:600}
+#scatter .hl2{opacity:calc(var(--p,0) * 2.4 - 1)}
+
+/* iPad + iPhone together */
+.combo{position:relative;display:inline-block;flex-shrink:0;padding-left:calc(var(--ih) * .24);padding-bottom:calc(var(--ih) * .1)}
+.combo .ipad{display:block}
+.combo .phone{position:absolute;left:0;bottom:0;--h:calc(var(--ih) * .9);z-index:2}
+.cb-dl{--ih:min(calc(var(--S) - 330px),380px)}
+.cb-pair{--ih:min(calc(var(--S) - 330px),480px)}
+.cb-money{--ih:min(calc(var(--S) - 290px),400px)}
+.cb-close{--ih:min(calc(var(--S) - 260px),380px)}
+.pairc{display:flex;justify-content:center;margin-top:clamp(16px,3vh,30px)}
+.caps{display:flex;justify-content:center;gap:clamp(30px,6vw,90px);margin-top:clamp(12px,2.4vh,22px)}
+.caps p{font-size:17px;font-weight:600;letter-spacing:-.03em;color:var(--muted);line-height:1.3;max-width:26ch;margin:0}
+
+/* 6 staggered pair */
+.stag{display:flex;justify-content:center;gap:clamp(30px,5vw,70px);margin-top:clamp(18px,3.5vh,36px);align-items:flex-start}
+.stag p{font-size:17px;font-weight:600;letter-spacing:-.03em;color:var(--muted);line-height:1.3;max-width:24ch;margin:16px 0 0}
+.stag .low{margin-top:calc(var(--S) * .08)}
+
+/* 7 iPad + switching text */
+.swt{position:relative;height:clamp(110px,15vh,140px);width:100%}
+.swt .sw{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+.sw{opacity:0;transition:opacity .45s,transform .6s var(--spring);transform:translateY(10px);pointer-events:none}
+.sw.on{opacity:1;transform:none;pointer-events:auto}
+img.sw{transform:none}
+.segs{display:flex;gap:6px;justify-content:center;margin-top:22px}
+.seg{font-size:13px;font-weight:600;letter-spacing:-.02em;color:var(--muted);padding:6px 12px;border-radius:999px;transition:background .3s,color .3s,width .3s}
+.seg.on{background:var(--btn2-bg);color:var(--fg)}
+:root[data-theme="dark"] .seg.on{background:#2C2C2E}
+
+/* 8 steps */
+.steps{grid-template-columns:1fr auto;margin-top:0}
+.stl{margin-top:clamp(26px,5vh,52px);display:flex;flex-direction:column;gap:clamp(14px,3vh,28px)}
+.st{border-left:2px solid var(--line);padding:2px 0 2px 18px;transition:border-color .4s}
+.st .n{font-size:17px;font-weight:600;color:var(--muted);transition:color .4s}
+.st h3{color:var(--muted);margin-top:6px;max-width:22ch}
+.st h3 b{font-weight:600;transition:color .4s}
+.st.on{border-color:var(--fg)}
+.st.on .n,.st.on h3 b{color:var(--fg)}
+.pcol{display:flex;flex-direction:column;align-items:center}
+
+/* 9 fanned stack */
+.fan2{grid-template-columns:1fr auto;margin-top:0}
+.fan2 .hl2{margin:0;max-width:22ch;font-size:clamp(24px,2.4vw,32px)}
+.fstack{position:relative;display:flex;margin-right:calc(min(calc(var(--S) - 170px),620px) * .46 * .26)}
+.fstack .k1{position:relative;z-index:3}
+.fstack .k2,.fstack .k3{position:absolute;top:0;left:0}
+.fstack .k2{z-index:2;translate:13% 0}
+.fstack .k3{z-index:1;translate:26% 0}
+
+/* 10 money */
+.duo{display:flex;gap:clamp(16px,2.2vw,28px);align-items:flex-start}
+.duo .low{margin-top:calc(var(--S) * .08)}
+.flist{display:flex;flex-direction:column;gap:clamp(18px,3.5vh,32px)}
+.flist>div{display:grid;grid-template-columns:30px 1fr;gap:14px;align-items:start}
+.flist p{margin:0;font-size:17px;font-weight:600;letter-spacing:-.03em;color:var(--muted);line-height:1.35}
+.flist b{display:block;color:var(--fg);font-size:21px;font-weight:600;margin-bottom:2px}
+
+/* 11 questions */
+.qa{margin-top:0}
+.qcol{position:relative}
+.swq{position:relative;height:clamp(250px,40vh,330px);margin-top:16px}
+.swq .sw{position:absolute;inset:0}
+.swq h3{font-size:clamp(24px,2.2vw,30px);color:var(--fg)}
+.swq p{font-size:clamp(22px,2.3vw,32px);line-height:1.22;letter-spacing:-.03em;font-weight:600;color:var(--muted);margin:14px 0 0;max-width:22ch}
+.dots{justify-content:flex-start;margin-top:0}
+.dots .seg{width:8px;height:8px;padding:0;background:var(--dim)}
+.dots .seg.on{background:var(--fg);width:24px}
+
+/* 12 cards around a phone */
+.ring3{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(20px,3vw,40px);align-items:center;margin-top:clamp(20px,4vh,40px)}
+.cc{display:grid;grid-auto-rows:1fr;gap:clamp(12px,2.2vh,20px)}
+.card{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;align-content:start;background:var(--bg2);border-radius:18px;padding:16px 18px}
+.card .ci{padding-top:1px}
+.card h4{font-size:16px;letter-spacing:-.02em}
+.card p{margin:4px 0 0;font-size:14px;line-height:1.35;color:var(--muted);font-weight:500}
+
+/* 13 closer + footer */
+.closer{grid-template-columns:minmax(0,1fr) auto;column-gap:clamp(32px,4vw,64px);margin-top:0}
+.closer .appicon{margin:0 0 24px}
+.closer h2{white-space:nowrap;font-size:clamp(34px,3.3vw,48px)}
+.cpair{position:relative;display:flex;margin-right:calc(min(calc(var(--S) - 230px),560px) * .46 * .36)}
+.cpair .c1{position:relative;z-index:2}
+.cpair .c2{position:absolute;top:0;left:36%;z-index:1;translate:0 -4%}
+footer{padding:8px 32px 32px}
+.fcard{background:var(--bg2);border-radius:24px;padding:32px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:24px;font-size:14px;font-weight:600;letter-spacing:-.02em}
+.fcard h5{font-size:13px;color:var(--muted);margin-bottom:10px}
+.fcard span,.fcard a{display:block;color:var(--fg);text-decoration:none;margin-bottom:6px}
+.fb .mark.big{width:34px;height:34px;margin-bottom:10px}
+.fb span{color:var(--muted);font-weight:500}
+.fcard,.fcard *{cursor:default}
+.fs{grid-column:1 / -1;color:var(--muted);font-weight:500;border-top:1px solid var(--hair);padding-top:16px}
+
+/* motion */
+.js .fade,.js .up{opacity:0;transform:translateY(30px)}
+.js .rise{opacity:0;transform:translateY(90px)}
+.js .fade.in,.js .up.in,.js .rise.in{opacity:1;transform:none;transition:opacity .9s var(--spring) var(--d,0ms),transform 1.1s var(--spring) var(--d,0ms)}
+.js .fan .f{opacity:0;translate:0 140px}
+.js .fan.in .f{opacity:1;translate:0 0;transition:opacity 1.1s var(--spring),translate 1.3s var(--spring);transition-delay:calc(var(--i) * 90ms + 200ms)}
+@media (prefers-reduced-motion:reduce){
+  .js .fade,.js .up,.js .rise,.js .fan .f{transform:none!important;translate:none!important;transition:opacity .4s!important}
+  .fan .f{transform:none!important}
+}
+
+/* MOBILE BUILD: same scenes in one column, still one screen each */
+.wrap,.narrow,.wide{padding:0 20px}
+footer{padding:8px 20px 24px}
+h1{font-size:44px} h2{font-size:32px;line-height:1.12} h3{font-size:20px}
+.nav .btn{display:none}
+.row,.steps,.fan2,.closer,.qa{grid-template-columns:1fr;gap:16px;justify-items:center}
+.lede{font-size:17px}
+.appicon{width:60px;height:60px;margin-bottom:16px}.appicon svg{width:46px;height:46px}
+.fan{--H:min(calc(var(--S) - 340px),calc((100vw - 40px) / 0.98),430px);gap:0}
+.fan .f1,.fan .f2{--h:calc(var(--H) * .86)}
+.fan .f3,.fan .f4,.fan .f5,.fan .f6{display:none}
+.fan .f1{margin-right:calc(var(--H) * -.19)}.fan .f2{margin-left:calc(var(--H) * -.19)}
+.fan .f{transform:none}
+#crew .row,#download .row{justify-items:start}
+#crew .p-main,#download .p-main{--h:calc(var(--S) - 440px)}
+.dv{justify-self:center}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+.stats span{font-size:13px}.stats b{font-size:17px}
+.stats span{color:var(--fg)}.stats b{color:var(--muted)}
+.js .stats .fade{opacity:1!important;transform:none!important;transition:none!important}
+.note{display:none}
+.fcol h3{font-size:18px}
+.fgrid{grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.fi p{font-size:13px}
+.cloud{--sx:.24;--sy:.62}
+.tile{z-index:3!important}
+.tile{padding:7px 9px 7px 7px;gap:7px;border-radius:12px}
+.tile .sg{width:16px;height:16px}
+.tt b{font-size:11px}.tt span{font-size:10px}.badge{display:none}
+.p-mid{--h:min(calc(var(--S) - 400px),420px)}
+.hl2{font-size:20px}
+.stag{gap:14px}
+.combo{--ih:calc((100vw - 40px) / 1.62)!important}
+.caps{gap:14px}.caps p{font-size:13px;max-width:none}
+#download .row,#money .row{justify-items:center}
+.p-pair{--h:calc(var(--S) - 420px)}
+.stag p{font-size:13px;max-width:18ch}
+.padw{--ih:calc((100vw - 40px) * .75)}
+.swt{height:150px}
+.seg{font-size:12px;padding:5px 9px}
+.scol{width:100%}
+.scol h2 br{display:none}
+.stl{margin-top:12px;gap:8px}
+.st{padding-left:12px}.st .n{font-size:13px}.st h3{font-size:17px;margin-top:2px}
+.st:not(.on){display:none}
+.steps .p-main{--h:calc(var(--S) - 350px)}
+.fan2 .hl2{font-size:20px;text-align:center}
+.p-fan{--h:calc(var(--S) - 330px)}
+.fstack{margin-right:calc((var(--S) - 330px) * .46 * .26)}
+.duo .low{margin-top:calc(var(--S) * .05)}
+.duo .p-pair{--h:calc(var(--S) - 470px)}
+.flist{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+.flist>div{grid-template-columns:1fr;gap:6px}
+.flist b{font-size:15px}.flist p{font-size:12px}
+.qa .p-main{--h:calc(var(--S) - 440px)}
+.qcol{width:100%}
+.swq{height:180px;margin-top:6px}
+.swq h3{font-size:20px}.swq p{font-size:18px;max-width:none}
+.ring3{grid-template-columns:1fr 1fr;gap:8px;align-items:stretch}
+.ring3>div:nth-child(2){grid-column:1 / -1;order:-1;justify-self:center}
+.p-ring{--h:calc(var(--S) - 560px)}
+.cc{gap:8px}
+.card{grid-template-columns:1fr;padding:10px 12px;gap:6px;border-radius:14px}
+.card .ci .sg{width:20px;height:20px}
+.card h4{font-size:13px}.card p{font-size:11.5px}
+.closer{justify-items:start;grid-template-columns:1fr}
+.closer h2{font-size:32px}
+.p-close{--h:calc(var(--S) - 470px)}
+.cpair{justify-self:center;margin-right:calc((var(--S) - 470px) * .46 * .36)}
+.grey20{font-size:17px}
+.fcard{grid-template-columns:1fr 1fr;padding:22px}
+.fb{grid-column:1 / -1}
+
+html,body{height:100%;margin:0;overflow:hidden;background:#000}
+.scroller{height:100vh;height:100dvh;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;background:var(--bg);color:var(--fg);font-family:var(--ui);-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<div id="scroller" class="scroller">
+<header class="nav">
+  <div class="wrap navi">
+    <a class="brand" href="#hero" aria-label="VAULT home"><span class="mark"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><mask id="m1"><rect width="100" height="100" fill="#fff"/><rect x="8" y="8" width="84" height="9" fill="#000"/><rect x="46" y="8" width="8" height="88" fill="#000"/></mask></defs><path d="M8,8 L92,8 L50,96 Z" fill="currentColor" mask="url(#m1)"/></svg></span>VAULT</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="scene hero" id="hero">
+    <div class="center">
+      <div class="appicon up" style="--d:0ms"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><mask id="m2"><rect width="100" height="100" fill="#fff"/><rect x="8" y="8" width="84" height="9" fill="#000"/><rect x="46" y="8" width="8" height="88" fill="#000"/></mask></defs><path d="M8,8 L92,8 L50,96 Z" fill="currentColor" mask="url(#m2)"/></svg></div>
+      <h1 class="up" style="--d:80ms">Every Department.<br>One <span class="v">VAULT</span></h1>
+    </div>
+    <div class="fan" aria-label="VAULT on iPhone: Board, a task, the side menu, Home, Inbox, Quick Add and a Crew list">
+      <div class="phone fin-black f f5" style="--i:5;--dir:-3"><div class="glass"><img data-shot="ph_board_interior" src="/assets/screens/ph_board_interior.webp" alt="Crew board view" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
+      <div class="phone fin-glacier f f3" style="--i:3;--dir:-2"><div class="glass"><img data-shot="ph_record_engineering" src="/assets/screens/ph_record_engineering.webp" alt="A task" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
+      <div class="phone fin-silver f f1" style="--i:1;--dir:-1"><div class="glass"><img data-shot="ph_drawer_deck" src="/assets/screens/ph_drawer_deck.webp" alt="Side menu open" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
+      <div class="phone fin-burgundy f f0" style="--i:0;--dir:0"><div class="glass"><img data-shot="ph_home_deck" src="/assets/screens/ph_home_deck.webp" alt="Home" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
+      <div class="phone fin-black f f2" style="--i:2;--dir:1"><div class="glass"><img data-shot="ph_inbox_hero" src="/assets/screens/ph_inbox_hero.webp" alt="Inbox" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
+      <div class="phone fin-glacier f f4" style="--i:4;--dir:2"><div class="glass"><img data-shot="ph_quickadd_deck" src="/assets/screens/ph_quickadd_deck.webp" alt="Quick Add" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
+      <div class="phone fin-silver f f6" style="--i:6;--dir:3"><div class="glass"><img data-shot="ph_list_galley" src="/assets/screens/ph_list_galley.webp" alt="Crew list view" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
+    </div>
+  </section>
+
+  <section class="pin" id="statement" style="--n:2">
+    <div class="stage center">
+      <div class="narrow">
+        <p class="hl" aria-label="Every task, every department, every crew record. In one place that stays with the vessel, not the rotation."><span class="w">Every</span> <span class="w">task,</span> <span class="w">every</span> <span class="w">department,</span> <span class="w">every</span> <span class="w">crew</span> <span class="w">record.</span> <span class="w">In</span> <span class="w">one</span> <span class="w">place</span> <span class="w">that</span> <span class="w">stays</span> <span class="w">with</span> <span class="w">the</span> <span class="w">vessel,</span> <span class="w">not</span> <span class="w">the</span> <span class="w">rotation.</span> </p>
+        <p class="kicker">Vessel management for superyachts. Built by crew, for crew.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="crew">
+    <div class="narrow">
+      <h2 class="fade">Built For The<br>Whole Crew.</h2>
+      <div class="row">
+        <div class="fade dv" style="--d:100ms"><div class="phone fin-burgundy p-main" ><div class="glass"><img data-shot="ph_drawer_deck" src="/assets/screens/ph_drawer_deck.webp" alt="The side menu with every department" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div></div>
+        <div class="stats">
+          <div class="fade" style="--d:200ms"><span>Departments</span><b>Spaces, Folders, Lists</b></div>
+          <div class="fade" style="--d:300ms"><span>Every Task</span><b>One Inbox</b></div>
+          <div class="fade" style="--d:400ms"><span>Available On</span><b>iPhone, iPad, Web</b></div>
+          <p class="note fade" style="--d:500ms">Deck, Interior, Galley and Engineering. Switch in one tap from the side menu.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="download">
+    <div class="wide">
+      <h2 class="fade">Work From<br>Anywhere On Board.</h2>
+      <div class="row">
+        <div class="fade dv" style="--d:100ms"><div class="combo cb-dl"><div class="ipad fin-spacegray cb-pad" ><div class="glass"><img data-shot="pad_mytasks_deck" src="/assets/screens/pad_mytasks_deck.webp" alt="My Tasks on iPad" decoding="async"></div><span class="b t1"></span><span class="b t2"></span></div><div class="phone fin-black cb-ph" ><div class="glass"><img data-shot="ph_mytasks_deck" src="/assets/screens/ph_mytasks_deck.webp" alt="My Tasks on iPhone" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div></div></div>
+        <div class="fcol">
+          <h3 class="grey fade" style="--d:180ms">From the foredeck to the engine room, VAULT goes where the task is.</h3>
+          <div class="fgrid">
+            <div class="fi fade" style="--d:280ms"><svg class="sg" width="26" height="26" viewBox="0 0 20 20" role="img" aria-label="Status: TO DO"><circle cx="10" cy="10" r="9" fill="none" stroke="#8D8D8D" stroke-width="2" stroke-dasharray="2.2 2.2"/></svg><p>Download and work anytime, anywhere.</p></div>
+            <div class="fi fade" style="--d:380ms"><svg class="sg" width="26" height="26" viewBox="0 0 20 20" role="img" aria-label="Status: IN PROGRESS"><circle cx="10" cy="10" r="9" fill="none" stroke="#FFC53D" stroke-width="2"/><path d="M10 10 L10 4.80 A5.20 5.20 0 0 1 10.00 15.20 Z" fill="#FFC53D"/></svg><p>Stay updated on multiple devices with ease.</p></div>
+            <div class="fi fade" style="--d:480ms"><svg class="sg" width="26" height="26" viewBox="0 0 20 20" role="img" aria-label="Status: COMPLETED"><circle cx="10" cy="10" r="10" fill="#30A46C"/><g fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.9 10.4 8.7 13.1 14.2 7.1"/></g></svg><p>Share your recommendations.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pin" id="scatter" style="--n:2.4">
+    <div class="stage">
+      <h2 class="center sch">Every Department.<br>Every Task.</h2>
+      <div class="cloud">
+        <div class="tile" style="--x:-400;--y:-235;--k:0"><svg class="sg" width="22" height="22" viewBox="0 0 20 20" role="img" aria-label="Status: IN PROGRESS"><circle cx="10" cy="10" r="9" fill="none" stroke="#FFC53D" stroke-width="2"/><path d="M10 10 L10 4.80 A5.20 5.20 0 0 1 12.26 14.69 Z" fill="#FFC53D"/></svg><span class="tt"><b>Tender Service</b><span>Deck</span></span><span class="badge" style="background:#FFC53D">IN PROGRESS</span></div><div class="tile" style="--x:-470;--y:-5;--k:1"><svg class="sg" width="22" height="22" viewBox="0 0 20 20" role="img" aria-label="Status: TO DO"><circle cx="10" cy="10" r="9" fill="none" stroke="#8D8D8D" stroke-width="2" stroke-dasharray="2.2 2.2"/></svg><span class="tt"><b>Wine Cellar Count</b><span>Interior</span></span><span class="badge" style="background:#8D8D8D">TO DO</span></div><div class="tile" style="--x:-390;--y:225;--k:2"><svg class="sg" width="22" height="22" viewBox="0 0 20 20" role="img" aria-label="Status: PENDING PARTS"><circle cx="10" cy="10" r="9" fill="none" stroke="#F76808" stroke-width="2"/><path d="M10 10 L10 4.80 A5.20 5.20 0 1 1 5.93 6.76 Z" fill="#F76808"/></svg><span class="tt"><b>Generator 2, 500h</b><span>Engineering</span></span><span class="badge" style="background:#F76808">PENDING PARTS</span></div><div class="tile" style="--x:400;--y:-220;--k:3"><svg class="sg" width="22" height="22" viewBox="0 0 20 20" role="img" aria-label="Status: QC REVIEW"><circle cx="10" cy="10" r="9" fill="none" stroke="#FFC53D" stroke-width="2"/><path d="M10 10 L10 4.80 A5.20 5.20 0 1 1 4.93 11.16 Z" fill="#FFC53D"/></svg><span class="tt"><b>Guest Menu, Day 3</b><span>Galley</span></span><span class="badge" style="background:#FFC53D">QC REVIEW</span></div><div class="tile" style="--x:460;--y:15;--k:4"><svg class="sg" width="22" height="22" viewBox="0 0 20 20" role="img" aria-label="Status: COMPLETED"><circle cx="10" cy="10" r="10" fill="#30A46C"/><g fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.9 10.4 8.7 13.1 14.2 7.1"/></g></svg><span class="tt"><b>Crew Briefing</b><span>Crew</span></span><span class="badge" style="background:#30A46C">COMPLETED</span></div><div class="tile" style="--x:390;--y:240;--k:5"><svg class="sg" width="22" height="22" viewBox="0 0 20 20" role="img" aria-label="Status: ON ORDER"><circle cx="10" cy="10" r="9" fill="none" stroke="#0091FF" stroke-width="2"/><path d="M10 10 L10 4.80 A5.20 5.20 0 1 1 6.94 14.21 Z" fill="#0091FF"/></svg><span class="tt"><b>Watermaker Filters</b><span>Engineering</span></span><span class="badge" style="background:#0091FF">ON ORDER</span></div><div class="tile" style="--x:-215;--y:-150;--k:6"><svg class="sg" width="22" height="22" viewBox="0 0 20 20" role="img" aria-label="Status: SCHEDULED"><circle cx="10" cy="10" r="9" fill="none" stroke="#0091FF" stroke-width="2"/><path d="M10 10 L10 4.80 A5.20 5.20 0 0 1 15.07 11.16 Z" fill="#0091FF"/></svg><span class="tt"><b>Hull Wash</b><span>Deck</span></span><span class="badge" style="background:#0091FF">SCHEDULED</span></div><div class="tile" style="--x:230;--y:120;--k:7"><svg class="sg" width="22" height="22" viewBox="0 0 20 20" role="img" aria-label="Status: CANCELLED"><circle cx="10" cy="10" r="10" fill="#E5484D"/><g fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 6.6 13.4 13.4M13.4 6.6 6.6 13.4"/></g></svg><span class="tt"><b>Laundry Rota</b><span>Interior</span></span><span class="badge" style="background:#E5484D">CANCELLED</span></div>
+        <div class="phone  fin-silver p-mid" ><div class="glass"><img data-shot="ph_home_deck" src="/assets/screens/ph_home_deck.webp" alt="Deck Home" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
+      </div>
+      <p class="hl2 center"><b>Lists, boards and records</b> for every department. <b>Every space works the same way</b>, so you <b>learn it once</b>.</p>
+    </div>
+  </section>
+
+  <section class="scene" id="pair">
+    <div class="narrow">
+      <h2 class="center fade">Every Task.<br>Every Detail.</h2>
+      <div class="rise pairc" style="--d:100ms"><div class="combo cb-pair"><div class="ipad fin-padsilver cb-pad" ><div class="glass"><img data-shot="pad_columns_engineering" src="/assets/screens/pad_columns_engineering.webp" alt="Crew list on iPad" decoding="async"></div><span class="b t1"></span><span class="b t2"></span></div><div class="phone fin-glacier cb-ph" ><div class="glass"><img data-shot="ph_record_engineering" src="/assets/screens/ph_record_engineering.webp" alt="The task on iPhone" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div></div></div>
+      <div class="caps"><p class="fade" style="--d:300ms">Every task in a list, grouped the way your department works.</p><p class="fade" style="--d:400ms">Open one and it is all there. Fields, checklist, photos, history.</p></div>
+    </div>
+  </section>
+
+  <section class="pin" id="ipad" style="--n:4">
+    <div class="stage center">
+      <div class="swt"><div class="sw on"><h2>From The Galley To The Engine Room.</h2><p class="lede">Same engine, every department. Learn it once.</p></div><div class="sw"><h2>Everything On One Screen.</h2><p class="lede">Departments, Inbox and the task you are on. Together.</p></div><div class="sw"><h2>Side By Side On iPad.</h2><p class="lede">Your list on the left. The task on the right.</p></div><div class="sw"><h2>Every Task On One Board.</h2><p class="lede">Critical, To Do, Scheduled, In Progress. Drag a task across when it moves.</p></div></div>
+      <div class="ipad padw"><div class="glass"><img data-shot="pad_home_galley" src="/assets/screens/pad_home_galley.webp" alt="From The Galley To The Engine Room." class="sw on" decoding="async"><img data-shot="pad_side_inbox_interior" src="/assets/screens/pad_side_inbox_interior.webp" alt="Everything On One Screen." class="sw" decoding="async"><img data-shot="pad_split_deck" src="/assets/screens/pad_split_deck.webp" alt="Side By Side On iPad." class="sw" decoding="async"><img data-shot="pad_board_interior" src="/assets/screens/pad_board_interior.webp" alt="Every Task On One Board." class="sw" decoding="async"></div><span class="b t1"></span><span class="b t2"></span></div>
+      <div class="segs"><span class="seg on">Home</span><span class="seg">Inbox</span><span class="seg">Split View</span><span class="seg">Board</span></div>
+    </div>
+  </section>
+
+  <section class="pin" id="steps" style="--n:3">
+    <div class="stage">
+      <div class="wide row steps">
+        <div class="scol">
+          <h2>Your Day, <br>In Three Taps.</h2>
+          <div class="stl"><div class="st on"><span class="n">01</span><h3>Open <b>My Tasks</b> and see only what is yours. Today, overdue, upcoming.</h3></div><div class="st"><span class="n">02</span><h3>Check the <b>Inbox</b> for what changed, and who changed it.</h3></div><div class="st"><span class="n">03</span><h3>Open the task, <b>tick it off</b> and sign it off.</h3></div></div>
+        </div>
+        <div class="pcol">
+          <div class="phone fin-silver p-main"><div class="glass"><img data-shot="ph_mytasks_deck" src="/assets/screens/ph_mytasks_deck.webp" alt="My Tasks" class="sw on" decoding="async"><img data-shot="ph_inbox_interior" src="/assets/screens/ph_inbox_interior.webp" alt="Inbox" class="sw" decoding="async"><img data-shot="ph_record_engineering" src="/assets/screens/ph_record_engineering.webp" alt="Get It Done" class="sw" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
+          <div class="segs"><span class="seg on">My Tasks</span><span class="seg">Inbox</span><span class="seg">Get It Done</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="fanned">
+    <div class="wide row fan2">
+      <p class="hl2 fade">Whether you are <b>on the foredeck</b> at first light or <b>in the engine room</b> at midnight, every task, every record and <b>every handover</b> lives in <b>one place</b>.</p>
+      <div class="fstack">
+        <div class="k3 rise" style="--d:300ms"><div class="phone fin-burgundy p-fan" ><div class="glass"><img data-shot="ph_home_engineering" src="/assets/screens/ph_home_engineering.webp" alt="Crew Home" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div></div>
+        <div class="k2 rise" style="--d:180ms"><div class="phone fin-black p-fan" ><div class="glass"><img data-shot="ph_home_interior" src="/assets/screens/ph_home_interior.webp" alt="Dashboard" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div></div>
+        <div class="k1 rise" style="--d:60ms"><div class="phone fin-glacier p-fan" ><div class="glass"><img data-shot="ph_home_deck" src="/assets/screens/ph_home_deck.webp" alt="Deck Home" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pin" id="faq" style="--n:4">
+    <div class="stage">
+      <div class="narrow row qa">
+        <div class="pcol"><div class="phone fin-silver p-main"><div class="glass"><img data-shot="ph_drawer_deck" src="/assets/screens/ph_drawer_deck.webp" alt="Who Sees What?" class="sw on" decoding="async"><img data-shot="ph_home_galley" src="/assets/screens/ph_home_galley.webp" alt="Is It Built For Every Department?" class="sw" decoding="async"><img data-shot="ph_list_deck" src="/assets/screens/ph_list_deck.webp" alt="Does It Work On iPad And The Web?" class="sw" decoding="async"><img data-shot="ph_inbox_interior" src="/assets/screens/ph_inbox_interior.webp" alt="How Do We Get Started?" class="sw" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div></div>
+        <div class="qcol">
+          <span class="eyebrow">Questions, Answered</span>
+          <div class="swq"><div class="sw on"><h3>Who Sees What?</h3><p>Crew see their own department. Captains and heads of department see the whole vessel, from one Dashboard.</p></div><div class="sw"><h3>Is It Built For Every Department?</h3><p>Deck, Interior, Galley and Engineering. Every space works the same way, so you learn it once.</p></div><div class="sw"><h3>Does It Work On iPad And The Web?</h3><p>The same lists, boards and records on every screen. Start a task on the iPad, sign it off on your phone.</p></div><div class="sw"><h3>How Do We Get Started?</h3><p>Talk to us about your vessel. We set up your departments and invite your crew.</p></div></div>
+          <div class="segs dots"><span class="seg on"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="life">
+    <div class="wide">
+      <h2 class="center fade">Made For Life On Board.</h2>
+      <div class="ring3">
+        <div class="cc"><div class="card fade" style="--d:0ms"><span class="ci"><svg class="sg" width="24" height="24" viewBox="0 0 20 20" role="img" aria-label="Status: IN PROGRESS"><circle cx="10" cy="10" r="9" fill="none" stroke="#FFC53D" stroke-width="2"/><path d="M10 10 L10 4.80 A5.20 5.20 0 0 1 12.26 14.69 Z" fill="#FFC53D"/></svg></span><div><h4>Status At A Glance</h4><p>A ring that fills as the task moves, and ticks when it is done.</p></div></div><div class="card fade" style="--d:90ms"><span class="ci"><svg class="sg" width="24" height="24" viewBox="0 0 20 20" role="img" aria-label="Status: SCHEDULED"><circle cx="10" cy="10" r="9" fill="none" stroke="#0091FF" stroke-width="2"/><path d="M10 10 L10 4.80 A5.20 5.20 0 0 1 15.07 11.16 Z" fill="#0091FF"/></svg></span><div><h4>Fields That Fit</h4><p>Location, task type, priority and dates, from a dropdown.</p></div></div><div class="card fade" style="--d:180ms"><span class="ci"><svg class="sg" width="24" height="24" viewBox="0 0 20 20" role="img" aria-label="Status: QC REVIEW"><circle cx="10" cy="10" r="9" fill="none" stroke="#FFC53D" stroke-width="2"/><path d="M10 10 L10 4.80 A5.20 5.20 0 1 1 4.93 11.16 Z" fill="#FFC53D"/></svg></span><div><h4>List Or Board</h4><p>The same list two ways. Drag a card when the task moves.</p></div></div></div>
+        <div class="fade" style="--d:150ms"><div class="phone fin-burgundy p-ring" ><div class="glass"><img data-shot="ph_home_deck" src="/assets/screens/ph_home_deck.webp" alt="Home" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div></div>
+        <div class="cc"><div class="card fade" style="--d:90ms"><span class="ci"><svg class="sg" width="24" height="24" viewBox="0 0 20 20" role="img" aria-label="Status: TO DO"><circle cx="10" cy="10" r="9" fill="none" stroke="#8D8D8D" stroke-width="2" stroke-dasharray="2.2 2.2"/></svg></span><div><h4>One Inbox</h4><p>Assigned, mentioned, overdue. Nothing slips through.</p></div></div><div class="card fade" style="--d:180ms"><span class="ci"><svg class="sg" width="24" height="24" viewBox="0 0 20 20" role="img" aria-label="Status: PENDING PARTS"><circle cx="10" cy="10" r="9" fill="none" stroke="#F76808" stroke-width="2"/><path d="M10 10 L10 4.80 A5.20 5.20 0 1 1 5.93 6.76 Z" fill="#F76808"/></svg></span><div><h4>Certificates On Time</h4><p>STCW, medicals and visas flagged before they expire.</p></div></div><div class="card fade" style="--d:270ms"><span class="ci"><svg class="sg" width="24" height="24" viewBox="0 0 20 20" role="img" aria-label="Status: COMPLETED"><circle cx="10" cy="10" r="10" fill="#30A46C"/><g fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5.9 10.4 8.7 13.1 14.2 7.1"/></g></svg></span><div><h4>Day And Night Watch</h4><p>Light for the day, dark for the bridge at night.</p></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" id="access">
+    <div class="wide row closer">
+      <div>
+        <div class="appicon fade"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><mask id="m3"><rect width="100" height="100" fill="#fff"/><rect x="8" y="8" width="84" height="9" fill="#000"/><rect x="46" y="8" width="8" height="88" fill="#000"/></mask></defs><path d="M8,8 L92,8 L50,96 Z" fill="currentColor" mask="url(#m3)"/></svg></div>
+        <h2 class="fade" style="--d:80ms">Every Department.<br>One VAULT</h2>
+        <p class="grey20 fade" style="--d:140ms">Vessel management for superyachts. Built by crew, for crew.</p>
+      </div>
+      <div class="rise" style="--d:150ms"><div class="combo cb-close"><div class="ipad fin-spacegray cb-pad" ><div class="glass"><img data-shot="pad_home_deck" src="/assets/screens/pad_home_deck.webp" alt="Deck Home on iPad" decoding="async"></div><span class="b t1"></span><span class="b t2"></span></div><div class="phone fin-black cb-ph" ><div class="glass"><img data-shot="ph_home_interior" src="/assets/screens/ph_home_interior.webp" alt="Dashboard on iPhone" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div></div></div>
+    </div>
+  </section>
+</main>
+
+<footer class="narrow">
+  <div class="fcard">
+    <div class="fb"><span class="mark big"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><mask id="m4"><rect width="100" height="100" fill="#fff"/><rect x="8" y="8" width="84" height="9" fill="#000"/><rect x="46" y="8" width="8" height="88" fill="#000"/></mask></defs><path d="M8,8 L92,8 L50,96 Z" fill="currentColor" mask="url(#m4)"/></svg></span><b>VAULT</b><span>Vessel management for superyachts.</span></div>
+    <div><h5>Departments</h5><span>Deck</span><span>Interior</span><span>Galley</span><span>Engineering</span></div>
+    <div><h5>Apps</h5><span>iPhone</span><span>iPad</span><span>Web</span></div>
+    <div><h5>Made For</h5><span>Superyachts</span><span>Crew</span></div>
+    <div class="fs">veslvault.com</div>
+  </div>
+</footer>
+</div>
+<script>
+window.VAULT_IMG = {"ph_record_engineering_dark": "/assets/screens/ph_record_engineering.webp", "ph_record_engineering_light": "/assets/screens/ph_record_engineering.webp", "pad_split_deck_dark": "/assets/screens/pad_split_deck.webp", "pad_split_deck_light": "/assets/screens/pad_split_deck.webp", "ph_home_deck_dark": "/assets/screens/ph_home_deck.webp", "ph_home_deck_light": "/assets/screens/ph_home_deck.webp", "ph_mytasks_deck_dark": "/assets/screens/ph_mytasks_deck.webp", "ph_mytasks_deck_light": "/assets/screens/ph_mytasks_deck.webp", "ph_list_deck_dark": "/assets/screens/ph_list_deck.webp", "ph_list_deck_light": "/assets/screens/ph_list_deck.webp", "ph_quickadd_deck_dark": "/assets/screens/ph_quickadd_deck.webp", "ph_quickadd_deck_light": "/assets/screens/ph_quickadd_deck.webp", "ph_board_interior_dark": "/assets/screens/ph_board_interior.webp", "ph_board_interior_light": "/assets/screens/ph_board_interior.webp", "ph_inbox_interior_dark": "/assets/screens/ph_inbox_interior.webp", "ph_inbox_interior_light": "/assets/screens/ph_inbox_interior.webp", "ph_home_engineering_dark": "/assets/screens/ph_home_engineering.webp", "ph_home_engineering_light": "/assets/screens/ph_home_engineering.webp", "pad_side_inbox_interior_dark": "/assets/screens/pad_side_inbox_interior.webp", "pad_side_inbox_interior_light": "/assets/screens/pad_side_inbox_interior.webp", "pad_home_deck_dark": "/assets/screens/pad_home_deck.webp", "pad_home_deck_light": "/assets/screens/pad_home_deck.webp", "pad_columns_engineering_dark": "/assets/screens/pad_columns_engineering.webp", "pad_columns_engineering_light": "/assets/screens/pad_columns_engineering.webp", "pad_home_galley_dark": "/assets/screens/pad_home_galley.webp", "pad_home_galley_light": "/assets/screens/pad_home_galley.webp", "ph_inbox_hero_dark": "/assets/screens/ph_inbox_hero.webp", "ph_inbox_hero_light": "/assets/screens/ph_inbox_hero.webp", "ph_list_galley_dark": "/assets/screens/ph_list_galley.webp", "ph_list_galley_light": "/assets/screens/ph_list_galley.webp", "ph_home_galley_dark": "/assets/screens/ph_home_galley.webp", "ph_home_galley_light": "/assets/screens/ph_home_galley.webp", "pad_board_interior_dark": "/assets/screens/pad_board_interior.webp", "pad_board_interior_light": "/assets/screens/pad_board_interior.webp", "ph_drawer_deck_dark": "/assets/screens/ph_drawer_deck.webp", "ph_drawer_deck_light": "/assets/screens/ph_drawer_deck.webp", "pad_mytasks_deck_dark": "/assets/screens/pad_mytasks_deck.webp", "pad_mytasks_deck_light": "/assets/screens/pad_mytasks_deck.webp", "ph_home_interior_dark": "/assets/screens/ph_home_interior.webp", "ph_home_interior_light": "/assets/screens/ph_home_interior.webp"};
+
+(function(){
+  var root=document.documentElement; root.classList.add('js');
+  // the website always loads in dark mode (Nov 2026)
+  var mq=window.matchMedia('(prefers-color-scheme: dark)');
+  function mode(){return root.getAttribute('data-theme')||'light'}
+  function setShots(){var m=mode();document.querySelectorAll('img[data-shot]').forEach(function(i){var s=(window.VAULT_IMG&&window.VAULT_IMG[i.getAttribute('data-shot')+'_'+m])||('img/'+i.getAttribute('data-shot')+'_'+m+'.jpg');if(i.getAttribute('src')!==s)i.setAttribute('src',s)});}
+  function apply(){root.setAttribute('data-theme','dark');setShots();}
+  apply();
+
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SC=document.getElementById('scroller'), NAV=64;
+  function vh(){return SC?SC.clientHeight:window.innerHeight}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{root:SC||null,rootMargin:'0px 0px -10% 0px'});
+  document.querySelectorAll('.fade,.rise').forEach(function(el){io.observe(el)});
+  requestAnimationFrame(function(){setTimeout(function(){document.querySelectorAll('.up').forEach(function(el){el.classList.add('in')});var f=document.querySelector('.fan');if(f)f.classList.add('in');},60)});
+
+  function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
+  var hero=document.getElementById('hero');
+  var pins=[].slice.call(document.querySelectorAll('.pin'));
+  var words=[].slice.call(document.querySelectorAll('#statement .w'));
+  var cloud=document.querySelector('.cloud');
+  function swap(sec,i){sec.querySelectorAll('.swt,.glass,.segs,.stl,.swq').forEach(function(g){[].slice.call(g.children).forEach(function(c,j){if(c.classList.contains('sw')||c.classList.contains('seg')||c.classList.contains('st'))c.classList.toggle('on',j===i)})})}
+  function frame(){
+    var H=vh(), S=H-NAV, top0=SC?SC.getBoundingClientRect().top:0;
+    if(hero&&!reduce){var r=hero.getBoundingClientRect();hero.style.setProperty('--q',clamp((top0+NAV-r.top)/S,0,1).toFixed(3));}
+    pins.forEach(function(sec){
+      var r=sec.getBoundingClientRect(), span=r.height-S; var p=clamp((top0+NAV-r.top)/span,0,1);
+      if(reduce&&(sec.id==='statement'||sec.id==='scatter'))p=1;
+      sec.style.setProperty('--p',p.toFixed(3));
+      if(sec.id==='statement'){var n=Math.round(clamp(p*1.6,0,1)*words.length);words.forEach(function(w,i){w.classList.toggle('on',i<n)});}
+      if(sec.id==='scatter'&&cloud){var e=clamp(p*1.6,0,1);e=1-Math.pow(1-e,3);cloud.style.setProperty('--e',e.toFixed(3));}
+      if(sec.id==='ipad'||sec.id==='steps'||sec.id==='faq'){
+        var count=sec.querySelectorAll('.segs .seg').length||1; var i=Math.min(count-1,Math.floor(p*count));
+        if(sec._i!==i){sec._i=i;swap(sec,i);}
+      }
+    });
+  }
+  var ticking=false;function onScroll(){if(!ticking){ticking=true;requestAnimationFrame(function(){ticking=false;frame()})}}
+  (SC||window).addEventListener('scroll',onScroll,{passive:true});window.addEventListener('resize',onScroll);frame();
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(ev){var t=document.querySelector(a.getAttribute('href'));if(t){ev.preventDefault();t.scrollIntoView({behavior:reduce?'auto':'smooth'})}})});
+})();
+
+</script>
+</body>
+</html>
