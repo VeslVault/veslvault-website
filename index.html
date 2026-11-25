@@ -7,6 +7,21 @@
 <meta name="description" content="Vessel management for superyachts. Built by crew, for crew. Every department, one VAULT, on iPhone, iPad and the web.">
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://veslvault.com/">
+<meta property="og:title" content="VAULT · Vessel Management for Superyachts">
+<meta property="og:description" content="Vessel management for superyachts. Built by crew, for crew. Every department, one VAULT, on iPhone, iPad and the web.">
+<meta property="og:image" content="https://veslvault.com/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="VAULT · Vessel Management for Superyachts">
+<meta name="twitter:description" content="Vessel management for superyachts. Built by crew, for crew.">
+<meta name="twitter:image" content="https://veslvault.com/assets/og-image.png">
 <script>
 /*
   One URL for everyone: veslvault.com never shows /desktop/ or /mobile/ in the
@@ -14,6 +29,13 @@
   page runs the same phone check as /desktop/ and /mobile/, fetches the right
   page's HTML synchronously, and replaces this document with it before anything
   paints. ?view=desktop / ?view=mobile still override it for testing.
+
+  The tags above are for anything that never runs this script: share-link
+  previews (iMessage, Slack, X, Facebook) and search crawlers. For a real
+  visitor, document.write() below replaces this whole document (these tags
+  included) with the right page, so nothing here is duplicated. Nothing is
+  added after this script, so there is nothing left for the parser to carry
+  over once document.write() runs — that is what would duplicate it.
 */
 (function(){
   var phone = /iPhone|iPod|Android.+Mobile|Windows Phone/i.test(navigator.userAgent)
