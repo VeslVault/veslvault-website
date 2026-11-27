@@ -86,29 +86,24 @@ h3{font-size:clamp(20px,2vw,28px);line-height:1.22;letter-spacing:-.03em}
 .cta.left{justify-content:flex-start}
 
 /* devices: iPhone 17 Pro, black titanium; iPad Pro, space black. Sized by height so the whole device always fits. */
-.phone{--hs:calc(var(--h,560px) / 1.0478);--w:calc(var(--hs) * .45995);--r:calc(var(--w) * .017);--z:calc(var(--w) * .04);--sr:calc(var(--w) * .137);
-  position:relative;flex-shrink:0;box-sizing:content-box;width:calc(var(--w) + 2 * var(--z));height:calc(var(--hs) + 2 * var(--z));padding:var(--r);border-radius:calc(var(--sr) + var(--z) + var(--r));background:var(--rim);filter:var(--drop)}
-.phone .glass{width:100%;height:100%;box-sizing:border-box;background:#000;border-radius:calc(var(--sr) + var(--z));padding:var(--z);position:relative;overflow:hidden;box-shadow:inset 0 0 0 1px var(--ring)}
-.phone img{width:100%;height:100%;object-fit:cover;border-radius:var(--sr);transition:opacity .45s}
-.phone .glass::after{content:"";position:absolute;top:calc(var(--z) + var(--hs) * .013);left:50%;width:calc(var(--w) * .31);height:calc(var(--hs) * .042);transform:translateX(-50%);background:#000;border-radius:999px;z-index:2}
-.fin-black{--rim:linear-gradient(145deg,#5b5b5b 0%,#141414 30%,#323232 62%,#0a0a0a 100%);--btnm:#2a2a2a}
-.fin-silver{--rim:linear-gradient(145deg,#ececec 0%,#a8a8a7 30%,#d6d6d5 62%,#7e7e7c 100%);--btnm:#b4b4b3}
-.fin-glacier{--rim:linear-gradient(145deg,#dbe2ec 0%,#8799af 30%,#bcc8d8 62%,#5a6d88 100%);--btnm:#8a9bb3}
-.fin-burgundy{--rim:linear-gradient(145deg,#936b74 0%,#3a1a20 30%,#6a434b 62%,#1a080c 100%);--btnm:#4a2a30}
-.fin-padsilver{--rim:linear-gradient(145deg,#e2e3e4 0%,#9c9d9f 30%,#cbcccd 62%,#8a8b8d 100%);--btnm:#a8a9ab}
-.fin-spacegray{--rim:linear-gradient(145deg,#8c878b 0%,#3c383d 30%,#5c585c 62%,#2d2c2d 100%);--btnm:#3c383d}
-.phone .b{position:absolute;width:calc(var(--w) * .012);background:var(--btnm);border-radius:1px}
-.phone .b.l1{left:calc(var(--w) * -.008);top:17.5%;height:3.2%}.phone .b.l2{left:calc(var(--w) * -.008);top:23.5%;height:6%}.phone .b.l3{left:calc(var(--w) * -.008);top:31%;height:6%}
-.phone .b.r1{right:calc(var(--w) * -.008);top:25.5%;height:9.5%}
-.glass img.sw{position:absolute;left:var(--z);top:var(--z);width:calc(100% - 2 * var(--z));height:calc(100% - 2 * var(--z));opacity:0}
+.phone{--hs:var(--h,560px);--w:calc(var(--hs) * .48657);--z:0px;
+  position:relative;flex-shrink:0;box-sizing:border-box;width:calc(var(--h,560px) * .48657);height:var(--h,560px);padding:0;background:none;filter:var(--drop)}
+.phone::after,.ipad::after{content:"";position:absolute;inset:0;background:var(--bz) center/100% 100% no-repeat;z-index:3;pointer-events:none}
+.phone .glass{position:absolute;left:4.37%;top:1.813%;width:91.306%;height:96.374%;background:#000;overflow:hidden;border-radius:14% / 6.5%}
+.phone img{display:block;width:100%;height:100%;object-fit:cover;transition:opacity .45s}
+.fin-black{--bz:url(/assets/bezels/bz_black.webp)}
+.fin-silver{--bz:url(/assets/bezels/bz_silver.webp)}
+.fin-glacier{--bz:url(/assets/bezels/bz_glacier.webp)}
+.fin-burgundy{--bz:url(/assets/bezels/bz_burgundy.webp)}
+.fin-padsilver{--bz:url(/assets/bezels/bz_padsilver.webp)}
+.fin-spacegray{--bz:url(/assets/bezels/bz_spacegray.webp)}
+.phone .b,.ipad .b{display:none}
+.glass img.sw{position:absolute;left:0;top:0;width:100%;height:100%;opacity:0}
 .glass img.sw.on{opacity:1}
-.ipad{--hs:calc(var(--ih,500px) / 1.0667);--w:calc(var(--hs) * 1.334);--r:calc(var(--w) * .004);--z:calc(var(--w) * .021);--sr:calc(var(--w) * .016);
-  position:relative;flex-shrink:0;box-sizing:content-box;width:calc(var(--w) + 2 * var(--z));height:calc(var(--hs) + 2 * var(--z));padding:var(--r);border-radius:calc(var(--sr) + var(--z) + var(--r));background:var(--rim);filter:var(--drop)}
-.ipad .glass{width:100%;height:100%;box-sizing:border-box;background:#000;border-radius:calc(var(--sr) + var(--z));padding:var(--z);position:relative;overflow:hidden;box-shadow:inset 0 0 0 1px var(--ring)}
-.ipad img{width:100%;height:100%;object-fit:cover;border-radius:var(--sr);transition:opacity .5s}
-.ipad .glass::after{content:"";position:absolute;top:calc(var(--z) * .5);left:50%;width:calc(var(--z) * .35);aspect-ratio:1;transform:translate(-50%,-50%);background:#1c1c1e;border-radius:50%;box-shadow:inset 0 0 0 .5px rgba(255,255,255,.18)}
-.ipad .b{position:absolute;height:.4%;background:var(--btnm);border-radius:1px;top:-.25%}
-.ipad .b.t1{right:5%;width:3.2%}.ipad .b.t2{right:9.5%;width:2.2%}
+.ipad{--hs:var(--ih,500px);--w:calc(var(--hs) * 1.30506);--z:0px;
+  position:relative;flex-shrink:0;box-sizing:border-box;width:calc(var(--ih,500px) * 1.30506);height:var(--ih,500px);padding:0;background:none;filter:var(--drop)}
+.ipad .glass{position:absolute;left:3.283%;top:4.196%;width:93.637%;height:91.652%;background:#000;overflow:hidden;border-radius:2.6% / 3.6%}
+.ipad img{display:block;width:100%;height:100%;object-fit:cover;transition:opacity .5s}
 
 /* device sizes per scene */
 .p-main{--h:min(calc(var(--S) - 250px),620px)}
@@ -286,6 +281,11 @@ h1{font-size:44px} h2{font-size:32px;line-height:1.12} h3{font-size:20px}
 .fan .f3,.fan .f4,.fan .f5,.fan .f6{display:none}
 .fan .f1{margin-right:calc(var(--H) * -.19)}.fan .f2{margin-left:calc(var(--H) * -.19)}
 .fan .f{transform:none}
+.fan.pd{gap:0;align-items:center}
+.fan.pd img{display:block;width:auto;max-width:none;filter:drop-shadow(0 30px 34px rgba(0,0,0,.55))}
+.fan.pd .p0{height:var(--H);position:relative;z-index:3}
+.fan.pd .p1,.fan.pd .p2{height:calc(var(--H) * .9);position:relative;z-index:1}
+.fan.pd .p1{margin-right:calc(var(--H) * -.075)}.fan.pd .p2{margin-left:calc(var(--H) * -.075)}
 #crew .row,#download .row{justify-items:start}
 #crew .p-main,#download .p-main{--h:calc(var(--S) - 440px)}
 .dv{justify-self:center}
@@ -370,15 +370,7 @@ html,body{height:100%;margin:0;overflow:hidden;background:#000}
       <div class="appicon up" style="--d:0ms"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><mask id="m2"><rect width="100" height="100" fill="#fff"/><rect x="8" y="8" width="84" height="9" fill="#000"/><rect x="46" y="8" width="8" height="88" fill="#000"/></mask></defs><path d="M8,8 L92,8 L50,96 Z" fill="currentColor" mask="url(#m2)"/></svg></div>
       <h1 class="up" style="--d:80ms">Every Department.<br>One <span class="v">VAULT</span></h1>
     </div>
-    <div class="fan" aria-label="VAULT on iPhone: Board, a task, the side menu, Home, Inbox, Quick Add and a Crew list">
-      <div class="phone fin-black f f5" style="--i:5;--dir:-3"><div class="glass"><img data-shot="ph_board_interior" src="/assets/screens/ph_board_interior.webp" alt="Crew board view" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
-      <div class="phone fin-glacier f f3" style="--i:3;--dir:-2"><div class="glass"><img data-shot="ph_record_engineering" src="/assets/screens/ph_record_engineering.webp" alt="A task" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
-      <div class="phone fin-silver f f1" style="--i:1;--dir:-1"><div class="glass"><img data-shot="ph_drawer_deck" src="/assets/screens/ph_drawer_deck.webp" alt="Side menu open" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
-      <div class="phone fin-burgundy f f0" style="--i:0;--dir:0"><div class="glass"><img data-shot="ph_home_deck" src="/assets/screens/ph_home_deck.webp" alt="Home" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
-      <div class="phone fin-black f f2" style="--i:2;--dir:1"><div class="glass"><img data-shot="ph_inbox_hero" src="/assets/screens/ph_inbox_hero.webp" alt="Inbox" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
-      <div class="phone fin-glacier f f4" style="--i:4;--dir:2"><div class="glass"><img data-shot="ph_quickadd_deck" src="/assets/screens/ph_quickadd_deck.webp" alt="Quick Add" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
-      <div class="phone fin-silver f f6" style="--i:6;--dir:3"><div class="glass"><img data-shot="ph_list_galley" src="/assets/screens/ph_list_galley.webp" alt="Crew list view" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
-    </div>
+<div class="fan pd" aria-label="VAULT on iPhone: the side menu, Home and Inbox"><img class="f p1" style="--i:1;--dir:-1" src="/assets/screens/hx_L.webp" alt="Side menu open" decoding="async"><img class="f p0" style="--i:0;--dir:0" src="/assets/screens/hx_F.webp" alt="Home" decoding="async"><img class="f p2" style="--i:2;--dir:1" src="/assets/screens/hx_R.webp" alt="Inbox" decoding="async"></div>
   </section>
 
   <section class="pin" id="statement" style="--n:2">
@@ -436,7 +428,7 @@ html,body{height:100%;margin:0;overflow:hidden;background:#000}
   <section class="scene" id="pair">
     <div class="narrow">
       <h2 class="center fade">Every Task.<br>Every Detail.</h2>
-      <div class="rise pairc" style="--d:100ms"><div class="combo cb-pair"><div class="ipad fin-padsilver cb-pad" ><div class="glass"><img data-shot="pad_columns_engineering" src="/assets/screens/pad_columns_engineering.webp" alt="Crew list on iPad" decoding="async"></div><span class="b t1"></span><span class="b t2"></span></div><div class="phone fin-glacier cb-ph" ><div class="glass"><img data-shot="ph_record_engineering" src="/assets/screens/ph_record_engineering.webp" alt="The task on iPhone" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div></div></div>
+      <div class="rise pairc" style="--d:100ms"><div class="combo cb-pair"><div class="ipad fin-padsilver cb-pad" ><div class="glass"><img data-shot="pad_columns_engineering" src="/assets/screens/pad_columns_engineering.webp" alt="Crew list on iPad" decoding="async"></div><span class="b t1"></span><span class="b t2"></span></div><div class="phone fin-glacier cb-ph" ><div class="glass"><img data-shot="ph_pair" src="/assets/screens/ph_pair.webp" alt="Crew board on iPhone" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div></div></div>
       <div class="caps"><p class="fade" style="--d:300ms">Every task in a list, grouped the way your department works.</p><p class="fade" style="--d:400ms">Open one and it is all there. Fields, checklist, photos, history.</p></div>
     </div>
   </section>
@@ -444,7 +436,7 @@ html,body{height:100%;margin:0;overflow:hidden;background:#000}
   <section class="pin" id="ipad" style="--n:4">
     <div class="stage center">
       <div class="swt"><div class="sw on"><h2>From The Galley To The Engine Room.</h2><p class="lede">Same engine, every department. Learn it once.</p></div><div class="sw"><h2>Everything On One Screen.</h2><p class="lede">Departments, Inbox and the task you are on. Together.</p></div><div class="sw"><h2>Side By Side On iPad.</h2><p class="lede">Your list on the left. The task on the right.</p></div><div class="sw"><h2>Every Task On One Board.</h2><p class="lede">Critical, To Do, Scheduled, In Progress. Drag a task across when it moves.</p></div></div>
-      <div class="ipad padw"><div class="glass"><img data-shot="pad_home_galley" src="/assets/screens/pad_home_galley.webp" alt="From The Galley To The Engine Room." class="sw on" decoding="async"><img data-shot="pad_side_inbox_interior" src="/assets/screens/pad_side_inbox_interior.webp" alt="Everything On One Screen." class="sw" decoding="async"><img data-shot="pad_split_deck" src="/assets/screens/pad_split_deck.webp" alt="Side By Side On iPad." class="sw" decoding="async"><img data-shot="pad_board_interior" src="/assets/screens/pad_board_interior.webp" alt="Every Task On One Board." class="sw" decoding="async"></div><span class="b t1"></span><span class="b t2"></span></div>
+      <div class="ipad fin-spacegray padw"><div class="glass"><img data-shot="pad_home_galley" src="/assets/screens/pad_home_galley.webp" alt="From The Galley To The Engine Room." class="sw on" decoding="async"><img data-shot="pad_side_inbox_interior" src="/assets/screens/pad_side_inbox_interior.webp" alt="Everything On One Screen." class="sw" decoding="async"><img data-shot="pad_split_deck" src="/assets/screens/pad_split_deck.webp" alt="Side By Side On iPad." class="sw" decoding="async"><img data-shot="pad_board_interior" src="/assets/screens/pad_board_interior.webp" alt="Every Task On One Board." class="sw" decoding="async"></div><span class="b t1"></span><span class="b t2"></span></div>
       <div class="segs"><span class="seg on">Home</span><span class="seg">Inbox</span><span class="seg">Split View</span><span class="seg">Board</span></div>
     </div>
   </section>
@@ -457,7 +449,7 @@ html,body{height:100%;margin:0;overflow:hidden;background:#000}
           <div class="stl"><div class="st on"><span class="n">01</span><h3>Open <b>My Tasks</b> and see only what is yours. Today, overdue, upcoming.</h3></div><div class="st"><span class="n">02</span><h3>Check the <b>Inbox</b> for what changed, and who changed it.</h3></div><div class="st"><span class="n">03</span><h3>Open the task, <b>tick it off</b> and sign it off.</h3></div></div>
         </div>
         <div class="pcol">
-          <div class="phone fin-silver p-main"><div class="glass"><img data-shot="ph_mytasks_deck" src="/assets/screens/ph_mytasks_deck.webp" alt="My Tasks" class="sw on" decoding="async"><img data-shot="ph_inbox_interior" src="/assets/screens/ph_inbox_interior.webp" alt="Inbox" class="sw" decoding="async"><img data-shot="ph_record_engineering" src="/assets/screens/ph_record_engineering.webp" alt="Get It Done" class="sw" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
+          <div class="phone fin-silver p-main"><div class="glass"><img data-shot="ph_mytasks_deck" src="/assets/screens/ph_mytasks_deck.webp" alt="My Tasks" class="sw on" decoding="async"><img data-shot="ph_inbox_interior" src="/assets/screens/ph_inbox_interior.webp" alt="Inbox" class="sw" decoding="async"><img data-shot="ph_getdone" src="/assets/screens/ph_getdone.webp" alt="Get It Done" class="sw" decoding="async"></div><span class="b l1"></span><span class="b l2"></span><span class="b l3"></span><span class="b r1"></span></div>
           <div class="segs"><span class="seg on">My Tasks</span><span class="seg">Inbox</span><span class="seg">Get It Done</span></div>
         </div>
       </div>
@@ -519,7 +511,7 @@ html,body{height:100%;margin:0;overflow:hidden;background:#000}
 </footer>
 </div>
 <script>
-window.VAULT_IMG = {"pad_home_deck_dark": "/assets/screens/pad_home_deck.webp", "pad_home_deck_light": "/assets/screens/pad_home_deck.webp", "ph_quickadd_deck_dark": "/assets/screens/ph_quickadd_deck.webp", "ph_quickadd_deck_light": "/assets/screens/ph_quickadd_deck.webp", "ph_home_interior_dark": "/assets/screens/ph_home_interior.webp", "ph_home_interior_light": "/assets/screens/ph_home_interior.webp", "ph_home_galley_dark": "/assets/screens/ph_home_galley.webp", "ph_home_galley_light": "/assets/screens/ph_home_galley.webp", "ph_record_engineering_dark": "/assets/screens/ph_record_engineering.webp", "ph_record_engineering_light": "/assets/screens/ph_record_engineering.webp", "pad_split_deck_dark": "/assets/screens/pad_split_deck.webp", "pad_split_deck_light": "/assets/screens/pad_split_deck.webp", "pad_side_inbox_interior_dark": "/assets/screens/pad_side_inbox_interior.webp", "pad_side_inbox_interior_light": "/assets/screens/pad_side_inbox_interior.webp", "pad_mytasks_deck_dark": "/assets/screens/pad_mytasks_deck.webp", "pad_mytasks_deck_light": "/assets/screens/pad_mytasks_deck.webp", "pad_columns_engineering_dark": "/assets/screens/pad_columns_engineering.webp", "pad_columns_engineering_light": "/assets/screens/pad_columns_engineering.webp", "pad_board_interior_dark": "/assets/screens/pad_board_interior.webp", "pad_board_interior_light": "/assets/screens/pad_board_interior.webp", "ph_list_deck_dark": "/assets/screens/ph_list_deck.webp", "ph_list_deck_light": "/assets/screens/ph_list_deck.webp", "ph_list_galley_dark": "/assets/screens/ph_list_galley.webp", "ph_list_galley_light": "/assets/screens/ph_list_galley.webp", "ph_board_interior_dark": "/assets/screens/ph_board_interior.webp", "ph_board_interior_light": "/assets/screens/ph_board_interior.webp", "ph_drawer_deck_dark": "/assets/screens/ph_drawer_deck.webp", "ph_drawer_deck_light": "/assets/screens/ph_drawer_deck.webp", "ph_inbox_interior_dark": "/assets/screens/ph_inbox_interior.webp", "ph_inbox_interior_light": "/assets/screens/ph_inbox_interior.webp", "pad_home_galley_dark": "/assets/screens/pad_home_galley.webp", "pad_home_galley_light": "/assets/screens/pad_home_galley.webp", "ph_home_engineering_dark": "/assets/screens/ph_home_engineering.webp", "ph_home_engineering_light": "/assets/screens/ph_home_engineering.webp", "ph_inbox_hero_dark": "/assets/screens/ph_inbox_hero.webp", "ph_inbox_hero_light": "/assets/screens/ph_inbox_hero.webp", "ph_home_deck_dark": "/assets/screens/ph_home_deck.webp", "ph_home_deck_light": "/assets/screens/ph_home_deck.webp", "ph_mytasks_deck_dark": "/assets/screens/ph_mytasks_deck.webp", "ph_mytasks_deck_light": "/assets/screens/ph_mytasks_deck.webp"};
+window.VAULT_IMG = {"ph_getdone_dark": "/assets/screens/ph_getdone.webp", "ph_getdone_light": "/assets/screens/ph_getdone.webp", "ph_list_deck_dark": "/assets/screens/ph_list_deck.webp", "ph_list_deck_light": "/assets/screens/ph_list_deck.webp", "ph_home_engineering_dark": "/assets/screens/ph_home_engineering.webp", "ph_home_engineering_light": "/assets/screens/ph_home_engineering.webp", "ph_mytasks_deck_dark": "/assets/screens/ph_mytasks_deck.webp", "ph_mytasks_deck_light": "/assets/screens/ph_mytasks_deck.webp", "ph_pair_dark": "/assets/screens/ph_pair.webp", "ph_pair_light": "/assets/screens/ph_pair.webp", "ph_list_galley_dark": "/assets/screens/ph_list_galley.webp", "ph_list_galley_light": "/assets/screens/ph_list_galley.webp", "ph_home_interior_dark": "/assets/screens/ph_home_interior.webp", "ph_home_interior_light": "/assets/screens/ph_home_interior.webp", "ph_hero_uniform_dark": "/assets/screens/ph_hero_uniform.webp", "ph_hero_uniform_light": "/assets/screens/ph_hero_uniform.webp", "pad_side_inbox_interior_dark": "/assets/screens/pad_side_inbox_interior.webp", "pad_side_inbox_interior_light": "/assets/screens/pad_side_inbox_interior.webp", "ph_drawer_deck_dark": "/assets/screens/ph_drawer_deck.webp", "ph_drawer_deck_light": "/assets/screens/ph_drawer_deck.webp", "pad_home_deck_dark": "/assets/screens/pad_home_deck.webp", "pad_home_deck_light": "/assets/screens/pad_home_deck.webp", "ph_home_galley_dark": "/assets/screens/ph_home_galley.webp", "ph_home_galley_light": "/assets/screens/ph_home_galley.webp", "pad_board_interior_dark": "/assets/screens/pad_board_interior.webp", "pad_board_interior_light": "/assets/screens/pad_board_interior.webp", "ph_home_deck_dark": "/assets/screens/ph_home_deck.webp", "ph_home_deck_light": "/assets/screens/ph_home_deck.webp", "ph_board_interior_dark": "/assets/screens/ph_board_interior.webp", "ph_board_interior_light": "/assets/screens/ph_board_interior.webp", "ph_hero_dash_dark": "/assets/screens/ph_hero_dash.webp", "ph_hero_dash_light": "/assets/screens/ph_hero_dash.webp", "ph_inbox_interior_dark": "/assets/screens/ph_inbox_interior.webp", "ph_inbox_interior_light": "/assets/screens/ph_inbox_interior.webp", "pad_split_deck_dark": "/assets/screens/pad_split_deck.webp", "pad_split_deck_light": "/assets/screens/pad_split_deck.webp", "pad_columns_engineering_dark": "/assets/screens/pad_columns_engineering.webp", "pad_columns_engineering_light": "/assets/screens/pad_columns_engineering.webp", "pad_mytasks_deck_dark": "/assets/screens/pad_mytasks_deck.webp", "pad_mytasks_deck_light": "/assets/screens/pad_mytasks_deck.webp", "pad_home_galley_dark": "/assets/screens/pad_home_galley.webp", "pad_home_galley_light": "/assets/screens/pad_home_galley.webp"};
 
 (function(){
   var root=document.documentElement; root.classList.add('js');
@@ -553,7 +545,7 @@ window.VAULT_IMG = {"pad_home_deck_dark": "/assets/screens/pad_home_deck.webp", 
       if(sec.id==='statement'){var n=Math.round(clamp(p*1.6,0,1)*words.length);words.forEach(function(w,i){w.classList.toggle('on',i<n)});}
       if(sec.id==='scatter'&&cloud){var e=clamp(p*1.6,0,1);e=1-Math.pow(1-e,3);cloud.style.setProperty('--e',e.toFixed(3));}
       if(sec.id==='life'){var lp=sec.querySelector('.lphone');if(lp){var st=sec.querySelector('.stage'),h2=st.querySelector('h2'),cs=st.querySelector('.lcards');
-        var top=h2.offsetTop+h2.offsetHeight+16,full=Math.max(260,st.clientHeight-top-16);
+        var top=h2.offsetTop+h2.offsetHeight+16,full=Math.max(240,(st.clientHeight-top-16)*0.82);
         st.style.setProperty('--lt',top+'px');st.style.setProperty('--lh',full+'px');
         var ph0=lp.offsetHeight||full,endS=(cs.offsetTop-14-top)/ph0,out=endS<0.3;
         var a=clamp(p/(out?0.4:0.5),0,1);a=a*a*(3-2*a);var sc=1+((out?0.5:Math.min(endS,1))-1)*a;
